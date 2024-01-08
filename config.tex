@@ -1,0 +1,351 @@
+% ------------------
+% Packages
+% ------------------
+\usepackage[english]{babel}
+\usepackage[T1]{fontenc}
+\usepackage[scaled]{helvet}
+\usepackage[utf8]{inputenc}
+\usepackage[letterpaper]{geometry}
+\usepackage[dvipsnames]{xcolor}
+
+\usepackage{algorithmicx}
+\usepackage{amsfonts,amsmath,amsthm,amssymb}
+\usepackage{booktabs}
+\usepackage{float}
+\usepackage{graphicx}
+\usepackage{latexsym}
+\usepackage{mathtools}
+\usepackage{sectsty}
+\usepackage{setspace}
+\usepackage{subcaption}
+\usepackage{tabularx}
+\usepackage{tikz}
+% \usepackage{txfonts}
+\usepackage{url}
+\usepackage{wrapfig}
+\usepackage{xparse}
+
+% ------------------
+% Shortcuts
+% ------------------
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\N}{\mathbb{N}}
+
+\newcommand{\id}{\mathrm{id}}
+
+% ------------------
+% Command Redefinitions
+% ------------------
+\renewcommand{\qed}{\hfill$\blacksquare$}
+
+\makeatletter
+\renewcommand*\env@matrix[1][*\c@MaxMatrixCols c]{%
+    \hskip -\arraycolsep
+    \let\@ifnextchar\new@ifnextchar
+    \array{#1}}
+\makeatother
+
+% ------------------
+% Colors
+% ------------------
+\definecolor{primary}{HTML}{207BA5}
+\definecolor{greybg}{RGB}{249, 249, 249}
+
+\definecolor{thmbg}{HTML}{F2F2F9}
+\definecolor{lemmabg}{HTML}{FFFAF8}
+\definecolor{lemmafr}{HTML}{983b0f}
+\definecolor{propbg}{HTML}{f2fbfc}
+\definecolor{propfr}{HTML}{191971}
+\definecolor{myp}{RGB}{197, 92, 212}
+\definecolor{grey17}{RGB}{17, 17, 17}
+\definecolor{MyGrey}{HTML}{5B5B5B}
+
+\definecolor{lightBlue}{rgb}{0.0, 0.64, 1.0}
+\definecolor{lightRed}{rgb}{1.0, 0.50, 0.50}
+\definecolor{darkGreen}{rgb}{0.31, 0.54, 0.30}
+\definecolor{violet}{RGB}{186, 153, 242}
+
+%----------------
+%	Text Styles
+%----------------
+\DeclareTextFontCommand{\term}{\color{orange}\bfseries}
+\DeclareTextFontCommand{\bred}{\color{red}\bfseries}
+\DeclareTextFontCommand{\itblue}{\color{lightBlue}\itshape}
+
+\DeclareTextFontCommand{\vector}{\bfseries\itshape}
+
+% ------------------
+%   URL Color
+% ------------------
+\usepackage[colorlinks=true]{hyperref}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=black,
+    filecolor=magenta,
+    urlcolor=blue,
+}
+
+% ------------------
+% Tikz Externalize
+% ------------------
+\usetikzlibrary{external}
+\tikzexternalize[prefix=tikz/]
+\tikzset{external/only named=true}
+
+% ------------------
+% Boxes
+% ------------------
+\usepackage[most]{tcolorbox}
+
+\newcommand\fancybox[3]{%
+    \tcbset{
+        mybox/.style={
+                enhanced,
+                boxsep=0mm,
+                opacityfill=0,
+                overlay={
+                        \coordinate (X) at ([xshift=-1mm, yshift=-1.5mm]frame.north west);
+                        \node[align=right, text=#1, text width=2.5cm, anchor=north east] at (X) {\bf#2};
+                        \draw[line width=0.5mm, color=#1] (frame.north west) -- (frame.south west);
+                    }
+            }
+    }
+    \begin{tcolorbox}[mybox]
+        #3
+    \end{tcolorbox}
+}
+
+\tcbuselibrary{theorems,skins,hooks}
+\NewDocumentCommand\thmbox{m O{\Large #1} O{greybg} O{primary} O{number within=section}}
+{
+    \newtcbtheorem[#5]{#1}{\large #2}
+    {%
+        enhanced,
+        breakable,
+        colback = #3,
+        frame hidden,
+        boxrule = 0sp,
+        borderline west = {2pt}{0pt}{#4},
+        sharp corners,
+        detach title,
+        before upper = \tcbtitle\par\smallskip,
+        coltitle = #4,
+        fonttitle = \bfseries,
+        %description font = \mdseries,
+        separator sign none,
+        segmentation style={solid, #4}
+    }
+    {th}
+}
+
+\thmbox{Corollary}[Corollary][myp!10][myp!85!black]
+\thmbox{Lemma}[Lemma][lemmabg][lemmafr]
+\thmbox{Propo}[Proposition][propbg][propfr]
+\thmbox{Defi}[Definition][primary!12][primary]
+\thmbox{Notation}[Notation][white][grey17][no counter]
+\thmbox{Theorem}[Theorem][primary!12][primary]
+\thmbox{Remark}[Remark][grey17!10][grey17][no counter]
+
+% ------------------
+% Environments
+% ------------------
+\newenvironment{corollary}[1][]   {\begin{Corollary}{#1}{}}                               {\end{Corollary}}
+\newenvironment{definition}[1][]  {\begin{Defi}{#1}{}}                                    {\end{Defi}}
+\newenvironment{lemma}[1][]       {\begin{Lemma}{#1}{}}                                   {\end{Lemma}}
+\newenvironment{proposition}[1][] {\begin{Propo}{#1}{}}                                   {\end{Propo}}
+\newenvironment{remark}[1][]      {\begin{Remark}{#1}{}}                                  {\end{Remark}}
+\newenvironment{theorem}[1][]     {\begin{Theorem}{#1}{}}                                 {\end{Theorem}}
+
+\newenvironment{rtheorem}[2][]    {\begin{Theorem}{#1}{#2}}                               {\end{Theorem}}
+
+\theoremstyle{definition}
+\newtheorem*{exam}{\color{primary}Example}
+% \newcommand{\example}[1]{\begin{exam}#1\end{exam}}
+% \newenvironment{example}          {\begin{exam}} {\begin{flushright}${\color{primary}\diamondsuit}$\end{flushright} \end{exam}}
+\newenvironment{example}          {\begin{exam}} {\hfill${\color{primary}\diamondsuit}$\end{exam}}
+
+\theoremstyle{definition}
+\newtheorem*{clm}{\color{MyGrey}Claim}
+\newenvironment{claim}            {\begin{clm}} {\end{clm}}
+
+% ------------------
+% Lists
+% ------------------
+\usepackage{enumitem}
+
+\newcommand{\cnumero}[2]{
+    \tikz[baseline=(myanchor.base)]
+    \node[minimum size=0.2cm,circle,
+        inner sep=1pt,draw, #2,thick,fill=#2](myanchor)
+    {\color{white}\bfseries\fontsize{8}{8}#1};}
+
+\newcommand*{\itembolasazules}[1]{\protect\cnumero{#1}{primary}}
+
+\newenvironment{listo} {\begin{enumerate}[label=\itembolasazules{\arabic*}]} {\end{enumerate}}
+\newenvironment{listu} {\begin{itemize}  [label=$\color{primary} \bullet$]}  {\end{itemize}}
+
+% ------------------
+% Table of Contents
+% ------------------
+\usepackage{blindtext}
+\usepackage{framed}
+\usepackage{titletoc}
+\usepackage{etoolbox}
+
+\patchcmd{\tableofcontents}{\contentsname}{\contentsname}{}{}
+
+\renewenvironment{leftbar}
+{\def\FrameCommand{\hspace{6em}%
+        {\color{primary}\vrule width 2pt depth 6pt}\hspace{1em}}%
+    \MakeFramed{\parshape 1 0cm \dimexpr\textwidth-6em\relax\FrameRestore}\vskip2pt%
+}
+{\endMakeFramed}
+
+\titlecontents{chapter}[0em]
+{\vspace*{2\baselineskip}}
+{\parbox{4.5em}{%
+        \hfill\Huge\bfseries\color{primary}\thecontentslabel}%
+    \vspace*{-2.3\baselineskip}\leftbar\textbf{\color{primary}\small\chaptername~\thecontentslabel}\\
+}{}{\endleftbar}
+
+\titlecontents{section}[8.4em]
+{\contentslabel{3em}}{}{}
+{\hspace{0.5em}\nobreak\itshape\color{primary}\contentspage}
+
+\titlecontents{subsection}[11.4em]
+{\contentslabel{3em}}{}{}
+{\hspace{0.5em}\nobreak\itshape\color{primary}\contentspage}
+
+% ------------------
+% Chapters
+% ------------------
+\newtcolorbox{titlecolorbox}[1]{ %the box around chapter
+    coltext=white,
+    colframe=primary,
+    colback=primary,
+    boxrule=0pt,
+    arc=0pt,
+    notitle,
+    width=4.8em,
+    height=2.4ex,
+    before=\hfill
+}
+
+\usepackage[explicit]{titlesec}
+
+\makeatletter
+\let\old@rule\@rule
+\def\@rule[#1]#2#3{\textcolor{primary}{\old@rule[#1]{#2}{#3}}}
+\makeatother
+
+\titleformat{\chapter}[display]
+{\Huge}
+{}
+{0pt}
+{\begin{titlecolorbox}{}
+        {\large\MakeUppercase{\bf\chaptername}}
+    \end{titlecolorbox}
+    \vspace*{-3.19ex}\noindent\rule{\textwidth}{0.4pt}
+    \parbox[b]{\dimexpr\textwidth-4.8em\relax}{\raggedright\MakeUppercase{#1}}{\hfill\fontsize{70}{60}\selectfont{\color{primary}\thechapter}}
+}
+[]
+
+\titleformat{name=\chapter,numberless}[display]
+{\Huge}
+{}
+{0pt}
+{
+    \vspace*{-3.19ex}\noindent\rule{\textwidth}{0.4pt}
+    \parbox[b]{\dimexpr\textwidth-4.8em\relax}{\raggedright\MakeUppercase{#1}}
+}
+[]
+
+% ------------------
+% Sections
+% ------------------
+\titleformat{\section}[hang]{\Large\bfseries}%
+{\rlap{\color{primary}\rule[-6pt]{\textwidth}{0.4pt}}\colorbox{primary}{%
+        \raisebox{0pt}[13pt][3pt]{ \makebox[60pt]{% height, width
+                \selectfont\color{white}{\thesection}}
+        }}}%
+{15pt}%
+{ \color{primary}#1
+    %
+}
+\titlespacing*{\section}{0pt}{3mm}{5mm}
+% ------------------
+% Subsections
+% ------------------
+\subsectionfont{\Large\color{primary}}
+
+% ------------------
+% Bibliography and Index
+% ------------------
+\usepackage{csquotes}
+\usepackage[
+    style=alphabetic, 
+    citestyle=numeric,
+    sorting=nyt,
+    sortcites=true,
+    autopunct=true,
+    autolang=hyphen,
+    hyperref=true,
+    abbreviate=false,
+    backref=true,
+    backend=biber,
+    defernumbers=true
+]{biblatex}
+\addbibresource{./bibliography.bib} % BibTeX bibliography file
+\defbibheading{bibempty}{}
+
+\usepackage{calc} % For simpler calculation - used for spacing the index letter headings correctly
+\usepackage{makeidx} % Required to make an index
+\makeindex % Tells LaTeX to create the files required for indexing
+
+% ------------------
+% Title page
+% ------------------
+\usetikzlibrary{calc}
+\usetikzlibrary{shapes.geometric}
+\usepackage{anyfontsize}
+\newcommand{\frontpage}[3]{
+    \begin{tikzpicture}[remember picture, overlay]
+        % Background
+        \fill[primary] (current page.south west) rectangle (current page.north east);
+
+        \foreach \i in {2.5,...,22} {
+            \node[rounded corners,primary!60,draw,regular polygon,regular polygon sides=6, minimum size=\i cm,ultra thick] at ($(current page.west)+(2.5,-5)$) {} ;
+        }
+
+        % Background Polygon
+        \foreach \i in {0.5,...,22} {
+            \node[rounded corners,primary!60,draw,regular polygon,regular polygon sides=6, minimum size=\i cm,ultra thick] at ($(current page.north west)+(2.5,0)$) {} ;
+        }
+
+        \foreach \i in {0.5,...,22} {
+            \node[rounded corners,primary!90,draw,regular polygon,regular polygon sides=6, minimum size=\i cm,ultra thick] at ($(current page.north east)+(0,-9.5)$) {} ;
+        }
+
+        \foreach \i in {21,...,6} {
+            \node[primary!85,rounded corners,draw,regular polygon,regular polygon sides=6, minimum size=\i cm,ultra thick] at ($(current page.south east)+(-0.2,-0.45)$) {} ;
+        }
+
+        % Title
+        \node[left,primary!5,minimum width=0.625*\paperwidth,minimum height=3cm, rounded corners] at ($(current page.north east)+(0,-9.5)$) {
+            {\fontsize{25}{30} \selectfont \bfseries #1}
+        };
+
+        % Subtitle
+        \node[left,primary!10,minimum width=0.625*\paperwidth,minimum height=2cm, rounded corners] at ($(current page.north east)+(0,-11)$) {
+            {\huge \textit{#2}}
+        };
+
+        % Author
+        \node[left,primary!5,minimum width=0.625*\paperwidth,minimum height=2cm, rounded corners] at ($(current page.north east)+(0,-13)$) {
+            {\Large \textsc{#3}}
+        };
+
+        % Year
+        \node[rounded corners,fill=primary!70,text =primary!5,regular polygon,regular polygon sides=6, minimum size=2.5 cm,inner sep=0,ultra thick] at ($(current page.west)+(2.5,-5)$) {\LARGE \bfseries \the\year{}};
+    \end{tikzpicture}
+}

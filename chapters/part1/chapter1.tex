@@ -1,0 +1,157 @@
+\chapter{Introduction to Artificial Intelligence}
+
+\section{Artificial Intelligence (AI)}
+
+Artificial Intelligence is a branch of computer science utilizing \itblue{computational} ideas and examining how we can achieve \itblue{intelligent} behavior through computation. 
+
+\subsection{Intelligence}
+
+\textit{The ability to apply knowledge to manipulate one's environment or to think abstractly as measured by objective criteria (such as tests)}
+\begin{flushright}
+    \textit{--- Merriam-Webster Dictionary}
+\end{flushright}
+
+Human features that are considered intelligent includes the ability to learn, understand, reason, plan, communicate, and perceive. For example, a human can learn to play a game, understand the rules of the game, reason about the best moves to make, plan a sequence of moves, communicate with other players, and perceive the state of the game.
+
+\subsection{The Turing Test}
+
+The Turing Test is a test of a machine's ability to exhibit intelligent behavior equivalent to, or indistinguishable from, that of a human. The test was introduced by Alan Turing in his 1950 paper, \textit{Computing Machinery and Intelligence}, while working at the University of Manchester \cite{10.1093/mind/LIX.236.433}. Turing proposed that a human evaluator would judge natural language conversations between a human and a machine designed to generate human-like responses. The evaluator would be aware that one of the two partners in conversation is a machine, and all participants would be separated from one another. The conversation would be limited to a text-only channel such as a computer keyboard and screen so that the result would not be dependent on the machine's ability to render words as speech. If the evaluator cannot reliably tell the machine from the human, the machine is said to have passed the test. The test does not check the ability to give the correct answer to questions; it checks how closely the answer resembles typical human answers. The conversation is limited to a single topic chosen by the examiner. 
+
+\begin{listu}
+    \item Turing provided some very persuasive arguments that a system passing the Turing test is \itblue{intelligent}.
+
+    \begin{listu}
+        \item We can only really say it \itblue{behaves} like a human
+        \item \bred{No guarantee} that it \itblue{thinks} like a human
+    \end{listu}
+
+    \item The Turing test does not provide much traction on the question of \bred{how to build} an intelligent system.
+\end{listu}
+
+\subsubsection{Why not just simulate human's brain?}
+
+\begin{listu}
+    \item Brains are very good at making rational decisions, but \bred{not perfect}.
+    \item Brains \bred{aren't as modular} as software, so hard to reverse engineer!
+    \item Computers and Humans have quite \bred{different abilities}.
+    \begin{listu}
+        \item \itblue{Memory} and \itblue{simulation} are key to decision making.
+        \item \itblue{Perceptual tasks} (vision, sound, etc.) are effectively accomplished by architectures related to the way the brain works (deep neural networks).
+    \end{listu}
+\end{listu}
+
+\subsection{Computational Intelligence}
+
+Artificial Intelligence tries to understand and model \itblue{intelligence} as a \bred{computational process}. Thus we try to construct systems whose \bred{computation} achieves or approximates the desired notion of intelligence.
+
+Other areas interested in the study of intelligence lie in other areas or study, e.g., cognitive science which focuses on human intelligence. Such areas are very related, but their central focus tends to be different.
+
+\section{Rationality}
+
+Formally, we can define an \term{agent} as something that \bred{perceives} and \bred{acts} in an \itblue{environment}. An agent can be a \itblue{human}, a \itblue{robot}, or a \itblue{software agent}.
+
+A \term{rational agent} is one that acts so as to achieve the best outcome or, when there is uncertainty, the best expected outcome. Rationality is distinct from omniscience (knowing everything) and omnipotence (being able to do anything). Rationality maximizes \term{expected utility}, which is the sum of the utility of each possible outcome of an action weighted by its probability of occurring. 
+
+Rationality is measured by the \itblue{outcome}, not the \itblue{action} itself. It is a precise \itblue{mathematical} notion of of what it means to do \itblue{the right thing} in any particular circumstance. Provides
+\begin{listu}
+    \item A \bred{precise mechanism} for analyzing and understanding the properties of this ideal behaviour we are trying to achieve.
+    \item A \bred{precise benchmark} against which we can measure the behaviour the systems we build.
+\end{listu}
+
+\subsubsection{Trying/Expectation}
+
+Rational action is not always equal to rational decision. 
+
+\begin{listo}
+    \item We often don't have \bred{full control} or \bred{knowledge} of the world we are interacting with.
+    \item We usually don't know \bred{precisely} what the \bred{effects} of our actions will be.
+\end{listo}
+
+In some contexts we can \itblue{simplify} the computational task by assuming that we do have full knowledge/control.
+
+\section{Subareas of AI}
+
+A common misconception is to equate AI with Machine Learning. But AI is much more than that. This course will not focus on Machine Learning, but rather on the other subareas of AI. What we cover is not an exhaustive list of all subareas of AI, but rather a starting point for further exploration.
+
+\begin{listu}
+    \item \textbf{Perception}: vision, speech understanding, etc.
+    \item \textbf{Machine Learning}, \textbf{Neural Networks}
+    \item \textbf{Robotics}
+    \item \textbf{Natural Language Processing}
+    \item \textbf{Reasoning and Decision Making}
+    \begin{listu}
+        \item \textbf{Symbolic Knowledge Representation}
+        \item \textbf{Reasoning} (logical, probabilistic)
+        \item \textbf{Decision Making} (search, planning, decision theory)
+    \end{listu}
+\end{listu}
+
+\subsection{Further Courses in AI}
+
+\begin{listu}
+    \item Perception: vision, speech understanding, etc.
+    \begin{listu}
+        \item CSC487H1 ``Computational Vision''
+        \item CSC420H1 ``Introduction to Image Understanding''
+    \end{listu}
+
+    \item Machine Learning, Neural networks
+    \begin{listu}
+        \item CSC311H ``Introduction to Machine Learning''
+        \item CSC412H ``Probabilistic Learning and Reasoning''
+        \item CSC413H1 ``Neural Networks and Deep Learning''
+    \end{listu}
+
+    \item Robotics
+    \begin{listu}
+        \item Engineering courses
+    \end{listu}
+
+    \item Natural language processing
+    \begin{listu}
+        \item CSC401H1 ``Natural Language Computing''
+        \item CSC485H1 ``Computational Linguistics''
+    \end{listu}
+
+    \item Reasoning and decision making
+    \begin{listu}
+        \item CSC486H1 ``Knowledge Representation and Reasoning''
+    \end{listu}
+\end{listu}
+
+\section{A Brief History of AI}
+
+\begin{listu}
+    \item 1940-1950: Early days
+    \begin{listu}
+        \item 1943: McCulloch \& Pitts: Boolean circuit model of brain
+        \item 1950: Turing's “Computing Machinery and Intelligence”
+    \end{listu}
+
+    \item 1950—70: Excitement: Look, Ma, no hands!
+    \begin{listu}
+        \item 1950s: Early AI programs, including Samuel's checkers program, Newell \& Simon's Logic Theorist, Gelernter's Geometry Engine
+        \item 1956: Dartmouth meeting: “Artificial Intelligence” adopted
+        \item 1965: Robinson's complete algorithm for logical reasoning
+    \end{listu}
+
+    \item 1970—Early 2000: Knowledge-based approaches
+    \begin{listu}
+        \item 1969—79: Early development of knowledge-based systems
+        \item 1980—88: Expert systems industry booms
+        \item 1988—93: Expert systems industry busts: “AI Winter”
+        \item 1997: IBM's Deep Blue beats chess grandmaster Garry Kasparov
+    \end{listu}
+
+    \item Early 2000— present: Statistical approaches
+    \begin{listu}
+        \item Resurgence of probability, focus on uncertainty
+        \item Agents and learning systems… “AI Spring”
+        \item 2007: DARPA Urban Challenge -- CMU autonomous vehicle drives 55 miles in an urban environment while adhering to traffic hazards and traffic laws.
+        \item 2016: AlphaGo beats 9-Dan pro Go player Lee Sedol
+        \item 2017: AlphaGo Zero -- learns by playing with itself
+        \item 2022: Large Language Models (LLM) Chat Generative Pre-trained Transformer, which has been fueled by advances in Neural Net architecture and access to big data. 
+    \end{listu}
+\end{listu}
+
+There are many \bred{unsolved} problems yet\dots including lots of \bred{legal/ethical} ones. 

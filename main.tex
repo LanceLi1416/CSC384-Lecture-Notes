@@ -1,0 +1,55 @@
+\documentclass{book}
+
+% Configuration
+\input{config.tex}
+
+\begin{document}
+
+\pagestyle{empty}
+\frontpage{CSC384}{Introduction to Artificial Intelligence}{Sinan Li}
+\newpage
+
+\tableofcontents
+\newpage
+
+\tikzset{
+    graph-node/.style={
+        circle,
+        fill=red,
+        draw=black,
+        line width=0.5pt,
+        inner sep=1.5pt
+    },
+    every edge/.style={
+        draw,
+        thick,
+    },
+    non-edge/.style={
+        dotted,
+        lightBlue,
+    },
+}
+
+\part{Notes}
+
+\input{chapters/part1/chapter1.tex}
+\input{chapters/part1/chapter2.tex}
+\input{chapters/part1/chapter3.tex}
+\input{chapters/part1/chapter4.tex}
+\input{chapters/part1/chapter5.tex}
+\input{chapters/part1/chapter6.tex}
+
+\part{Appendices}
+
+\chapter*{Bibliography}
+\addcontentsline{toc}{part}{Bibliography}
+\nocite{*}
+\printbibliography[heading=bibempty]
+
+\cleardoublepage
+\phantomsection
+\setlength{\columnsep}{0.75cm}
+\addcontentsline{toc}{part}{Index}
+\printindex
+
+\end{document}
