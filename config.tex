@@ -69,6 +69,8 @@
 \definecolor{darkGreen}{rgb}{0.31, 0.54, 0.30}
 \definecolor{violet}{RGB}{186, 153, 242}
 
+\definecolor{algo-kwd}{HTML}{e43c48}
+
 %----------------
 %	Text Styles
 %----------------
@@ -94,7 +96,28 @@
 % ------------------
 \usetikzlibrary{external}
 \tikzexternalize[prefix=tikz/]
-\tikzset{external/only named=true}
+% \tikzset{external/only named=true}
+
+% ------------------
+% Algorithms
+% ------------------
+% Change color of keywords
+\algrenewcommand\algorithmicfunction{\textcolor{algo-kwd}{\textbf{function}}}
+\algrenewcommand\algorithmicreturn{\textcolor{algo-kwd}{\textbf{return}}}
+
+\algrenewcommand\algorithmicfor{\textcolor{algo-kwd}{\textbf{for}}}
+\algrenewcommand\algorithmicwhile{\textcolor{algo-kwd}{\textbf{while}}}
+\algrenewcommand\algorithmicdo{\textcolor{algo-kwd}{\textbf{do}}}
+
+\algrenewcommand\algorithmicif{\textcolor{algo-kwd}{\textbf{if}}}
+\algrenewcommand\algorithmicthen{\textcolor{algo-kwd}{\textbf{then}}}
+\algrenewcommand\algorithmicelse{\textcolor{algo-kwd}{\textbf{else}}}
+
+% No end if, end for, etc.
+\algtext*{EndIf}
+\algtext*{EndFor}
+\algtext*{EndWhile}
+\algtext*{EndFunction}
 
 % ------------------
 % Boxes

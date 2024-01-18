@@ -283,7 +283,7 @@ There are strategies that adpot a \itblue{fixed-rule} for selecting the next nod
 
 In those course, it is assumed that the graph we are searching is \itblue{explicitly} represented as an adjacency list (or adjacency matrix). However, this will \bred{not} work when there an exponential number of nodes and edges. In AI applications, there are typically an exponential number of nodes, making it impossible to explicitely represent them all. AI search algorithms work with \itblue{implicitly} defined state spaces, where actions are compacted as \itblue{successor state functions}, and nodes must contaion enough information to allow the successor state function to be applied.
 
-\subsection{Breadth-First Search}
+\subsection{Breadth-First Search (BFS)}
 
 \begin{definition}[Breadth-First Search]\label{def:bfs}
     \term{Breadth-First Search} is a search strategy that expands the shallowest unexpanded node first.
@@ -301,6 +301,7 @@ BFS explores the search tree \itblue{level by level}. It place the children of t
     which yields the search tree
 
     \begin{center}
+        \tikzexternalenable
         \begin{tikzpicture}[ tree-node/.style={ circle, draw=black, line width=0.5pt, minimum size=0.67cm, } ]
             \node[tree-node] (S) at (0, 0) {$S$};
             \node[tree-node] (P) at (-2, -1) {$p$};
@@ -322,6 +323,7 @@ BFS explores the search tree \itblue{level by level}. It place the children of t
             \draw (R) -- (F);
             \draw (F) -- (G);
         \end{tikzpicture}
+        \tikzexternaldisable
     \end{center}
 \end{example}
 
@@ -340,7 +342,7 @@ BFS explores the search tree \itblue{level by level}. It place the children of t
 
         All nodes with shorter paths are expanded prior to any node with longer path. We examine all paths of length $< k$ before all paths of length $k$. Thus, if there is a solution with length $k$, we will find it before longer solutions. 
 
-        \item BFS is \bred{not} optimal in terms of \itblue{cost}.
+        \item BFS is \bred{not optimal} in terms of \itblue{cost}.
         
         BFS does not take into account the cost of the path. It is possible that a longer path has a lower cost than a shorter path.
     \end{listu}
@@ -381,10 +383,212 @@ Let $b$ be the maximum branching factor and $d$ be the depth of the shallowest g
 
 Space complexity is a bigger problem than time complexity. Typically, BFS rus out of memory before it runs out of time.
 
-\subsection{Depth-First Search}
+\subsection{Depth-First Search (DFS)}
 
 \begin{definition}[Depth-First Search]\label{def:dfs}
     \term{Depth-First Search} is a search strategy that expands the deepest unexpanded node first.
 \end{definition}
 
 DFS explores the search tree \itblue{branch by branch}. It place the children of the current node at the \bred{front} of the \Frontier. This means the \Frontier is a \bred{stack}, and we always extract the \itblue{first} element from the \Frontier.
+
+\begin{example}
+    We run DFS on the following graph,
+
+    \begin{center}
+        \includegraphics[width=0.45\linewidth]{figures/Search Graph Rep.png}
+    \end{center}
+
+    The \Frontier changes as follows:
+
+    \begin{center}
+        \begin{tabular}{| c | c | c |}
+            \hline
+            \textbf{Frontier} & \textbf{Node Removed} & \textbf{Successors Added} \\ \hline \hline
+            $S$               & $S$                   & $d, e, p$                 \\ \hline
+            $d, e, p$         & $d$                   & $b, c, e$                 \\ \hline
+            $b, c, e, e, p$   & $b$                   & $a$                       \\ \hline
+            $a, c, e, e, p$   & $a$                   & $\null$                   \\ \hline
+            $c, e, e, p$      & $c$                   & $a$                       \\ \hline
+            $a, e, e, p$      & $a$                   & $\null$                   \\ \hline
+            $e, e, p$         & $e$                   & $h, r$                    \\ \hline
+        \end{tabular}
+
+        {~~~}
+
+        $\cdots$
+    \end{center}
+\end{example}
+
+\begin{listu}
+    \item \textbf{Completeness}
+    
+    \begin{listu}
+        \item DFS is \term{not complete}. \bred{Infinite} paths cause incompleteness.
+        \item This is because DFS does not keep track of visited nodes, so it can get stuck in a loop. An infinite search space can also cause DFS to run forever.
+        \item We can prune paths with \bred{cycles} to get completeness, if state space is finite. 
+    \end{listu}
+
+    \item \textbf{Optimality}
+    
+    \begin{listu}
+        \item DFS is \term{not optimal} in terms of \itblue{length} or \itblue{cost}.
+        \item DFS returns the \itblue{first} solution it finds, which may not be the \itblue{shortest} or \itblue{cheapest} solution.
+    \end{listu}
+\end{listu}
+
+\subsubsection{Properties of DFS}
+
+Let $b$ be the maximum branching factor and $m$ be the maximum depth of the search tree.
+
+\begin{listu}
+    \item \textbf{Time Complexity} \[
+        \mathcal{O}(b^m)
+    \] where $m$ is the length of the \itblue{longest path} in the state space.
+
+    \begin{listu}
+        \item This is \bred{very bad} if $m$ is much larger than $d$, but if there are \itblue{mant solution paths}, DFS may be much faster than BFS.
+        \item Using \term{Heuristics}, we can determine which successor to explore first. 
+    \end{listu}
+
+    \item \textbf{Space Complexity} \[
+        \mathcal{O}(bm)
+    \]
+    
+    DFS has a \bred{linear} space complexity, which is a significant advantage. 
+
+    This is because DFA only explores a single branch of the search tree at a time. \Frontier only contains the current node $v$ along with the $m$ descendants of $v$.  Each node can have at most $b$ unexplored siblings and there are at most $m$ nodes on the current branch, which gives $\mathcal{O}(bm)$.
+\end{listu}
+
+\subsection{Depth-Limited Search (DLS)}
+
+Despite DFS being \itblue{incomplete} and \itblue{non-optimal}, it has a great advantage over BFS: \itblue{linear space complexity}. This makes it possible to use DFS in situations where BFS would run out of memory. 
+
+In order to address the incompleteness of DFS, we can impose a \itblue{depth limit} $D$ on the search. This means that we will only explore paths of length $D$ or less. If we reach a node at depth $D$ that is not a goal node, we will \itblue{backtrack} and explore other paths. This is called \term{Depth-Limited Search} (DLS).
+
+\begin{definition}[Depth-Limited Search]\label{def:dls}
+    \term{Depth-Limited Search} is a search strategy that expands the deepest unexpanded node first, but only up to a given depth limit $D$.
+\end{definition}
+
+\begin{listu}
+    \item {\color{darkGreen}\textbf{Benefit}:} DLS overcomes the infinite length paths issue, 
+    \item \bred{Limitation:} DLS only finds a solution if the \itblue{depth limit} $D$ is greater than or equal to the depth of the shallowest goal node $d$. 
+\end{listu}
+
+\begin{remark}
+    The root of a search tree is at depth 0. A path consisting onlty of the root node has length 0.
+
+    Recall that the length of a path is the number of actions (edges) in the path. 
+\end{remark}
+
+\begin{center}
+    \includegraphics[width=0.67\linewidth]{figures/ids-limit-3.png}
+\end{center}
+
+\begin{algorithm}[ht!]
+    \caption{Depth-Limited Search Algorithm}
+    \begin{algorithmic}[1]
+        \Function{DLS}{start, frontier, successors, goal?, maxd}
+            \State frontier.insert(<start>)
+            \Comment{frontier must be a stack for DFS}
+            \State cutoff $\gets$ false
+            \While{frontier is not empty}
+                \State curr $\gets$ frontier.extract()
+                \Comment{Remove node from frontier}
+                \If{goal?(curr.final())}
+                    \State \Return curr, cutoff 
+                    \Comment{curr is solution}
+                \ElsIf{\Call{Length}{curr} $<$ maxd}
+                \Comment{Only successors if lendth(curr) < maxd}
+                    \For{succ $\in$ successors(curr.final())}
+                        \State frontier.insert(<p, succ>)
+                    \EndFor
+                \Else
+                    \State cutoff $\gets$ true
+                    \Comment{Reached depth limit, some nodes not expanded}
+                \EndIf
+            \EndWhile
+
+            \State \Return failure, cutoff
+        \EndFunction
+    \end{algorithmic}
+\end{algorithm}
+
+\subsection{Iterative Deepening Search (IDS)}
+
+DLS is \itblue{complete} if the \itblue{depth limit} $D$ is greater than or equal to the depth of the shallowest goal node $d$. However, we do not know $d$ in advance. We can start at a depth limit $D = 0$, and iteratively \bred{increase} $D$ until we find a solution. We stop if {\color{darkGreen}\textbf{a solution is found}}, or the search \bred{failed without cutting off} any nodes because of the depth limit. This is called \term{Iterative Deepening Search} (IDS).
+
+Note that if no nodes were cut off, the search examined all nodes in the state space and found nosolution, hence there is no solution. 
+
+\begin{definition}[Iterative Deepening Search]\label{def:ids}
+    \term{Iterative Deepening Search} is a search strategy that repeatedly applies DLS with increasing depth limits until a solution is found.
+\end{definition}
+
+\begin{center}
+    \includegraphics[width=0.67\linewidth]{figures/ids-limit-1.png}
+    \includegraphics[width=0.67\linewidth]{figures/ids-limit-2.png}
+    \includegraphics[width=0.67\linewidth]{figures/ids-limit-3.png}
+\end{center}
+
+\begin{algorithm}[ht!]
+    \caption{Iterative Deepening Search Algorithm}
+
+    \begin{algorithmic}
+        \Function{IDS}{start, frontier, successors, goal?}
+            \State depth $\gets$ 0
+            \While{true}
+                \State solution, cutoff $\gets$ \Call{DLS}{start, successors, goal?, depth}
+                \If{solution is not failure}
+                    \State \Return solution
+                \ElsIf{cutoff is false}
+                \Comment{No nodes at deeper levels exist, no solution}
+                    \State \Return failure
+                \EndIf
+                \State depth $\gets$ depth + 1
+            \EndWhile
+        \EndFunction
+    \end{algorithmic}
+\end{algorithm}
+
+\begin{listu}
+    \item \textbf{Completeness}
+    
+    \begin{listu}
+        \item IDS is \term{complete}. 
+    \end{listu}
+
+    \item \textbf{Optimality}
+    
+    \begin{listu}
+        \item IDS gives the \bred{shortest length solution}.
+
+        \item IDS is \term{not optimal} in terms of \itblue{cost}, for the same reason as DFS.
+        
+        We can make IDS optimal by doing the following:
+
+        \begin{listu}
+            \item Can use a \bred{cost bound} instead of depth bound.
+            \item Only expand nodes of cost \itblue{less} than the cost bound. 
+            \item Keep track of the \term{minimum cost unexpanded node} in each iteration, \itblue{increase the cost bound} to that on the next iteration.
+            \item Can be \bred{computationally expensive} since need as many iterations of the search as there are distinct node costs.
+        \end{listu}
+    \end{listu}
+\end{listu}
+
+\subsubsection{Properties of IDS}
+
+\begin{listu}
+    \item \textbf{Time Complexity} \[
+        (d+1)b^0 + db^1 + (d-1)b^2 + \cdots + b^d \in \mathcal{O}(b^d)
+    \]
+
+    \begin{listu}
+        \item This is \bred{very bad} if $d$ is much larger than $m$, but if there are \itblue{mant solution paths}, IDS may be much faster than BFS.
+        \item Using \term{Heuristics}, we can determine which successor to explore first. 
+    \end{listu}
+
+    \item \textbf{Space Complexity} \[
+        \mathcal{O}(bd)
+    \]
+    
+    The space complexity of IDS is still linear. 
+\end{listu}
