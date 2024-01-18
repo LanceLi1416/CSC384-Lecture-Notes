@@ -107,7 +107,7 @@ Once a search problem is formalized, there are a number of algorithms one can us
     \end{remark}
 \end{example}
 
-\subsubsection{More Complex Situations}
+% \subsubsection{More Complex Situations}
 
 In more complex situations, 
 
@@ -126,7 +126,7 @@ In more complex situations,
 \subsection{Graphical Representation}
 
 \begin{center}
-    \includegraphics[width=0.67\linewidth]{figures/Search Graph Rep.png}
+    \includegraphics[width=0.5\linewidth]{figures/Search Graph Rep.png}
 \end{center}
 
 Assuming a finite search space, the
@@ -210,19 +210,19 @@ A search tree reflects the behaviour of an algorithm as it walks through a searc
     \item \textbf{Procedure}
     
     \begin{listu}
-        \item Put nodes have not yet expanded in a list called the \term{\texttt{Frontier}} (or \term{Open}).
-        \item Initially, only the \itblue{initial node} is in the \texttt{Frontier}.
-        \item At each iteration, pull a node from the \texttt{Frontier}, apply $S(x)$, and insert the children back into the \texttt{Frontier}.
+        \item Put nodes have not yet expanded in a list called the \term{\Frontier} (or \term{Open}).
+        \item Initially, only the \itblue{initial node} is in the \Frontier.
+        \item At each iteration, pull a node from the \Frontier, apply $S(x)$, and insert the children back into the \Frontier.
         \item Repeat until pulling a goal node.
     \end{listu}
 \end{listu}
 
-\newpage
+% \newpage
 \begin{algorithm}
     \caption{Tree Search Algorithm}
     
     \begin{algorithmic}[1]
-        \Function{TreeSearch}{Frontier, Successors, Goal?}
+        \Function{Tree-Search}{Frontier, Successors, Goal?}
             % If frontier is empty, return failure
             \If{Frontier is empty}
                 \State \Return failure
@@ -234,7 +234,7 @@ A search tree reflects the behaviour of an algorithm as it walks through a searc
                 \State \Return Curr
             \EndIf
 
-            \State Frontier' $\gets$ Frontier $-$ \{ Curr \} $\cup$ Successors(Curr)
+            \State Frontier' $\gets$ (Frontier $-$ \{ Curr \}) $\cup$ Successors(Curr)
 
             \State \Return \Call{TreeSearch}{Frontier', Successors, Goal?}
         \EndFunction
@@ -243,4 +243,148 @@ A search tree reflects the behaviour of an algorithm as it walks through a searc
 
 % TODO: example
 
-Note that the search terminates only when a goal node is expanded into the \texttt{Frontier}.
+Note that the search terminates only when a goal node is expanded into the \Frontier.
+
+\subsubsection{Critical Properties of Search}
+
+\begin{listu}
+    \item \textbf{Completeness}
+    
+    \begin{listu}
+        \item A search algorithm is \term{complete} if it always finds a solution if one exists.
+    \end{listu}
+
+    \item \textbf{Optimality}
+    
+    \begin{listu}
+        \item A search algorithm is \term{optimal} if it always finds a solution with the lowest cost.
+    \end{listu}
+
+    \item \textbf{Time Complexity}
+    
+    \begin{listu}
+        \item The \term{time complexity} of a search algorithm is the number of nodes it expands or generates. 
+    \end{listu}
+
+    \item \textbf{Space Complexity}
+    
+    \begin{listu}
+        \item The \term{space complexity} of a search algorithm is the maximum number of nodes it stores in memory.
+    \end{listu}
+\end{listu}
+
+\section{Uninformed Search Algorithms}
+
+\subsection{Uninformed Search Strategies}
+
+The \bred{order} of nodes in the \Frontier determines the behaviour of the search algorithm. It determines whether or not the algorithm is complete, optimal, and how much time and space it requires. Search algorithms differ in their selection rule, but they all keep the \Frontier as an ordered set. The question of which node to select next from the \Frontier is now equivalent to the question of how to order the \Frontier.
+
+There are strategies that adpot a \itblue{fixed-rule} for selecting the next node to be expanded. These strategies are called \term{uninformed search strategies} because they do \bred{not} use any \itblue{domain specific informatioin} about the problem other than the definition of the problem itself. These strategies include Breadth-First Search, Depth-First Search, Uniform-Cost Search, Depth-Limited Search, and Iterative Deepening Search. 
+
+In those course, it is assumed that the graph we are searching is \itblue{explicitly} represented as an adjacency list (or adjacency matrix). However, this will \bred{not} work when there an exponential number of nodes and edges. In AI applications, there are typically an exponential number of nodes, making it impossible to explicitely represent them all. AI search algorithms work with \itblue{implicitly} defined state spaces, where actions are compacted as \itblue{successor state functions}, and nodes must contaion enough information to allow the successor state function to be applied.
+
+\subsection{Breadth-First Search}
+
+\begin{definition}[Breadth-First Search]\label{def:bfs}
+    \term{Breadth-First Search} is a search strategy that expands the shallowest unexpanded node first.
+\end{definition}
+
+BFS explores the search tree \itblue{level by level}. It place the children of the current node at the \bred{end} of the \Frontier. This means the \Frontier is a \itblue{queue}, and we always extract the \itblue{first} element from the \Frontier.
+
+\begin{example}
+    We run BFS on the following graph,
+
+    \begin{center}
+        \includegraphics[width=0.45\linewidth]{figures/Search Graph Rep.png}
+    \end{center}
+
+    which yields the search tree
+
+    \begin{center}
+        \begin{tikzpicture}[ tree-node/.style={ circle, draw=black, line width=0.5pt, minimum size=0.67cm, } ]
+            \node[tree-node] (S) at (0, 0) {$S$};
+            \node[tree-node] (P) at (-2, -1) {$p$};
+            \node[tree-node] (E) at (0, -1) {$e$};
+            \node[tree-node] (D) at (2, -1) {$d$};
+            \node[tree-node] (Q) at (-3, -2) {$q$};
+            \node[tree-node] (H) at (-1, -2) {$h$};
+            \node[tree-node] (R) at (1, -2) {$r$};
+            \node[tree-node] (F) at (2, -3) {$f$};
+            \node[tree-node] (G) at (3, -4) {$G$};
+
+            % Edges
+            \draw (S) -- (P);
+            \draw (S) -- (E);
+            \draw (S) -- (D);
+            \draw (P) -- (Q);
+            \draw (E) -- (H);
+            \draw (E) -- (R);
+            \draw (R) -- (F);
+            \draw (F) -- (G);
+        \end{tikzpicture}
+    \end{center}
+\end{example}
+
+\begin{listu}
+    \item \textbf{Completeness}
+    
+    \begin{listu}
+        \item BFS is \term{complete} if the \bred{branching factor} is \itblue{finite}.
+        \item The length of the path (from the initial node to the node removed from the \Frontier) is \itblue{non-decreasing}, as we replace eac expanded node with path langth $k$ with a node with path length of $k + 1$. 
+    \end{listu}
+
+    \item \textbf{Optimality}
+    
+    \begin{listu}
+        \item BFS gives the \bred{shortest length solution}. 
+
+        All nodes with shorter paths are expanded prior to any node with longer path. We examine all paths of length $< k$ before all paths of length $k$. Thus, if there is a solution with length $k$, we will find it before longer solutions. 
+
+        \item BFS is \bred{not} optimal in terms of \itblue{cost}.
+        
+        BFS does not take into account the cost of the path. It is possible that a longer path has a lower cost than a shorter path.
+    \end{listu}
+\end{listu}
+
+% TODO: Romnia Travel Example, see slides page 35
+
+\subsubsection{Properties of BFS}
+
+Let $b$ be the maximum branching factor and $d$ be the depth of the shallowest goal node.
+
+\begin{listu}
+    \item \textbf{Time Complexity} \[
+        1 + b + b^2 + \cdots + b^d + b(b^d - 1) \in O(b^{d+1})
+    \]
+
+    The last term id $b(b^d - 1)$ because we need to remove the goal node, who does not need any successors.
+
+    \item \textbf{Space Complexity} \[
+        \mathcal{O}(b^{d+1})
+    \]
+    
+    In the worst case, only the last node of depth $d$ satisfies the goal. So all nodes at depth $d$ except the last one will be expanded by the search and each such expansion will add up to $b$ new nodes to the \Frontier.
+\end{listu}
+
+\begin{table}[ht!]
+    \renewcommand{\arraystretch}{1.25}
+    \centering
+    \begin{tabular}{| l | l | l | l |}
+        \hline
+        Depth & Paths    & Time          & Memory    \\ \hline
+        1     & $1$      & 0.01 millisec & 100 bytes \\ \hline
+        6     & $10^6$   & 10 sec.       & 100 MB    \\ \hline
+        8     & $10^8$   & 17 min.       & 10 GB     \\ \hline
+        9     & $10^{9}$ & 3 hrs.        & 100 GB    \\ \hline
+    \end{tabular}
+\end{table}
+
+Space complexity is a bigger problem than time complexity. Typically, BFS rus out of memory before it runs out of time.
+
+\subsection{Depth-First Search}
+
+\begin{definition}[Depth-First Search]\label{def:dfs}
+    \term{Depth-First Search} is a search strategy that expands the deepest unexpanded node first.
+\end{definition}
+
+DFS explores the search tree \itblue{branch by branch}. It place the children of the current node at the \bred{front} of the \Frontier. This means the \Frontier is a \bred{stack}, and we always extract the \itblue{first} element from the \Frontier.
