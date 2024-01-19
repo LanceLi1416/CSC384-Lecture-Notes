@@ -32,10 +32,13 @@
 % ------------------
 \newcommand{\R}{\mathbb{R}}
 \newcommand{\N}{\mathbb{N}}
-
 \newcommand{\id}{\mathrm{id}}
 
 \newcommand{\Frontier}{\texttt{Frontier}}
+
+\newcommand{\bigo}[1]{\mathcal{O}\left(#1\right)}
+\newcommand{\floor}[1]{\left\lfloor #1 \right\rfloor}
+
 
 % ------------------
 % Command Redefinitions
@@ -68,6 +71,7 @@
 \definecolor{lightRed}{rgb}{1.0, 0.50, 0.50}
 \definecolor{darkGreen}{rgb}{0.31, 0.54, 0.30}
 \definecolor{violet}{RGB}{186, 153, 242}
+\definecolor{darkRed}{HTML}{b91231}
 
 \definecolor{algo-kwd}{HTML}{e43c48}
 
@@ -75,7 +79,7 @@
 %	Text Styles
 %----------------
 \DeclareTextFontCommand{\term}{\color{orange}\bfseries}
-\DeclareTextFontCommand{\bred}{\color{red}\bfseries}
+\DeclareTextFontCommand{\bred}{\color{darkRed}\bfseries}
 \DeclareTextFontCommand{\itblue}{\color{lightBlue}\itshape}
 
 \DeclareTextFontCommand{\vector}{\bfseries\itshape}

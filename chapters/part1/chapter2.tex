@@ -138,7 +138,7 @@ Assuming a finite search space, the
 
 \subsubsection{Search Tree}
 
-\begin{definition}[Search Tree]
+\begin{definition}[Search Tree]\index{Search Tree}\label{def:search-tree}
     A \term{search tree} is a \itblue{directed graph} where
 
     \begin{listu}
@@ -234,7 +234,7 @@ A search tree reflects the behaviour of an algorithm as it walks through a searc
                 \State \Return Curr
             \EndIf
 
-            \State Frontier' $\gets$ (Frontier $-$ \{ Curr \}) $\cup$ Successors(Curr)
+            \State \Frontier' $\gets$ (Frontier $-$ \{ Curr \}) $\cup$ Successors(Curr)
 
             \State \Return \Call{TreeSearch}{Frontier', Successors, Goal?}
         \EndFunction
@@ -285,7 +285,7 @@ In those course, it is assumed that the graph we are searching is \itblue{explic
 
 \subsection{Breadth-First Search (BFS)}
 
-\begin{definition}[Breadth-First Search]\label{def:bfs}
+\begin{definition}[Breadth-First Search]\index{Breadth-First Search}\label{def:bfs}
     \term{Breadth-First Search} is a search strategy that expands the shallowest unexpanded node first.
 \end{definition}
 
@@ -362,7 +362,7 @@ Let $b$ be the maximum branching factor and $d$ be the depth of the shallowest g
     The last term id $b(b^d - 1)$ because we need to remove the goal node, who does not need any successors.
 
     \item \textbf{Space Complexity} \[
-        \mathcal{O}(b^{d+1})
+        \bigo{b^{d+1}}
     \]
     
     In the worst case, only the last node of depth $d$ satisfies the goal. So all nodes at depth $d$ except the last one will be expanded by the search and each such expansion will add up to $b$ new nodes to the \Frontier.
@@ -385,7 +385,7 @@ Space complexity is a bigger problem than time complexity. Typically, BFS rus ou
 
 \subsection{Depth-First Search (DFS)}
 
-\begin{definition}[Depth-First Search]\label{def:dfs}
+\begin{definition}[Depth-First Search]\index{Depth-First Search}\label{def:dfs}
     \term{Depth-First Search} is a search strategy that expands the deepest unexpanded node first.
 \end{definition}
 
@@ -442,7 +442,7 @@ Let $b$ be the maximum branching factor and $m$ be the maximum depth of the sear
 
 \begin{listu}
     \item \textbf{Time Complexity} \[
-        \mathcal{O}(b^m)
+        \bigo{b^m}
     \] where $m$ is the length of the \itblue{longest path} in the state space.
 
     \begin{listu}
@@ -451,12 +451,12 @@ Let $b$ be the maximum branching factor and $m$ be the maximum depth of the sear
     \end{listu}
 
     \item \textbf{Space Complexity} \[
-        \mathcal{O}(bm)
+        \bigo{bm}
     \]
     
     DFS has a \bred{linear} space complexity, which is a significant advantage. 
 
-    This is because DFA only explores a single branch of the search tree at a time. \Frontier only contains the current node $v$ along with the $m$ descendants of $v$.  Each node can have at most $b$ unexplored siblings and there are at most $m$ nodes on the current branch, which gives $\mathcal{O}(bm)$.
+    This is because DFA only explores a single branch of the search tree at a time. \Frontier only contains the current node $v$ along with the $m$ descendants of $v$.  Each node can have at most $b$ unexplored siblings and there are at most $m$ nodes on the current branch, which gives $\bigo{bm}$.
 \end{listu}
 
 \subsection{Depth-Limited Search (DLS)}
@@ -465,7 +465,7 @@ Despite DFS being \itblue{incomplete} and \itblue{non-optimal}, it has a great a
 
 In order to address the incompleteness of DFS, we can impose a \itblue{depth limit} $D$ on the search. This means that we will only explore paths of length $D$ or less. If we reach a node at depth $D$ that is not a goal node, we will \itblue{backtrack} and explore other paths. This is called \term{Depth-Limited Search} (DLS).
 
-\begin{definition}[Depth-Limited Search]\label{def:dls}
+\begin{definition}[Depth-Limited Search]\index{Depth-Limited Search}\label{def:dls}
     \term{Depth-Limited Search} is a search strategy that expands the deepest unexpanded node first, but only up to a given depth limit $D$.
 \end{definition}
 
@@ -519,7 +519,7 @@ DLS is \itblue{complete} if the \itblue{depth limit} $D$ is greater than or equa
 
 Note that if no nodes were cut off, the search examined all nodes in the state space and found nosolution, hence there is no solution. 
 
-\begin{definition}[Iterative Deepening Search]\label{def:ids}
+\begin{definition}[Iterative Deepening Search]\index{Iterative Deepening Search}\label{def:ids}
     \term{Iterative Deepening Search} is a search strategy that repeatedly applies DLS with increasing depth limits until a solution is found.
 \end{definition}
 
@@ -578,7 +578,7 @@ Note that if no nodes were cut off, the search examined all nodes in the state s
 
 \begin{listu}
     \item \textbf{Time Complexity} \[
-        (d+1)b^0 + db^1 + (d-1)b^2 + \cdots + b^d \in \mathcal{O}(b^d)
+        (d+1)b^0 + db^1 + (d-1)b^2 + \cdots + b^d \in \bigo{b^d}
     \]
 
     \begin{listu}
@@ -587,8 +587,207 @@ Note that if no nodes were cut off, the search examined all nodes in the state s
     \end{listu}
 
     \item \textbf{Space Complexity} \[
-        \mathcal{O}(bd)
+        \bigo{bd}
     \]
     
     The space complexity of IDS is still linear. 
 \end{listu}
+
+\begin{remark}
+    Comparing to BFS, 
+
+    \begin{itemize}
+        \item The {\color{darkGreen}time complexity} of IDS can be better since it does not expand nodes at the solution depth, while BFS (in the worst case) must expand all the \itblue{bottom later nodes} until it expands a goal node. However, with a simple optimization BFS can achieve the \itblue{same time complexity} as IDS.
+
+        \item The {\color{darkGreen}space complexity} of IDS is much better.
+        \begin{listu}
+            \item In practice, BFS can be buch better depending on the problem: effective \bred{cycle checking} can be employed with BFS
+            \item IDS cycle checking will make the space complexity as bad as BFS. 
+        \end{listu}
+    \end{itemize}
+\end{remark}
+
+\subsection{Path Checking and Cycle Checking}
+
+\subsubsection{Path Checking}
+
+\begin{definition}[Path Checking]\index{Path Checking}\label{def:path-checking}
+    \term{Path Checking} is a search strategy that checks whether a node is an ancestor of itself along the path from the initial node to the node.
+\end{definition}
+
+\begin{remark}[Notation]
+    \begin{listu}
+        \item A path $p_k$ is represented as a typle of states $\langle s_0, s_1, \cdots, s_k \rangle$ where $s_0, s_1, \cdots, s_k$ are states in $p_k$ in the order they appear in the path.
+        \item Suppose $s_k$ is expanded to obtain a child succcessor statce $c$. The obtained path $\langle s_0, s_1, \cdots, s_k, c \rangle$ can be written as $\langle p_k, c \rangle$.
+    \end{listu}
+\end{remark}
+
+\begin{listu}
+    \item In every path $\langle p_k, c \rangle$ where $p_k$ is the path $\langle s_0, s_1, \cdots, s_k \rangle$, ensure that the \bred{final state} $c$ is not equal to any ancestors of $c$ along this path. That is, \[
+        c \notin \{ s_0, s_1, \cdots, s_k \}
+    \]
+
+    \item Paths are checked in \bred{isolation}
+    
+    \item {\color{darkGreen}\textbf{Benefit}:} Does not increase time and space commplexity. 
+    
+    \item \bred{Limitation}: Does not prune all the redundant states. 
+\end{listu}
+
+\begin{example}
+    Consider the Romania Travel problem. Below is an example of a search tree. 
+
+    \begin{center}
+        % \tikzexternalenable
+        % \begin{tikzpicture}
+        %     % Elipse node, black stroke, white background, text `Arad' in node
+        %     \node[draw, circle, fill=white] (Arad) at (0, 0) {Arad};
+
+        % \end{tikzpicture}
+        % \tikzexternaldisable
+        \includegraphics[width=0.67\linewidth]{figures/path-checking.png}
+    \end{center}
+
+    The nodes coloured in red are pruned by path checking, as they are ancestors of the current node.
+\end{example}
+
+\subsubsection{Cycle Checking}
+
+Cycle checking is also called \term{Multiple path checking}. It is a \itblue{more general} version of path checking. It checks whether a node has been expanded before, not just whether it is an ancestor of itself along the path from the initial node to the node. 
+
+\begin{definition}[Cycle Checking]\index{Cycle Checking}\label{def:cycle-checking}
+    \term{Cycle Checking} is a search strategy that checks whether a node has been expanded before.
+\end{definition}
+
+\begin{listu}
+    \item Keep track of \bred{all} nodes previous expanded during the search using a list called the \term{closed list}.
+    
+    \item When we expand $n_k$ to obtain successor $c$, 
+    
+    \begin{listu}
+        \item Ensure that $c$ is not equal to any \itblue{previously expanded} node.
+        \item If it is, we \bred{do not add} $c$ to the \Frontier. 
+    \end{listu}
+
+    \item {\color{darkGreen}\textbf{Benefit}:} Very \itblue{effective} in pruning redundant states.
+    
+    \item \bred{Limitation}: Expensive in term of \bred{space}. 
+    
+    The space complexity is $\bigo{b^{d}}$ with optimization, and $\bigo{b^{d+1}}$ without optimization (which is the same as BFS).
+\end{listu}
+
+\begin{remark}
+    We cannot utilize this technique with DFS. This is because DFS only puts a node in the closed list after all its descendants have been expanded. Thus, the ``root'' node will be put on the list later than its descendants, and cycle checking will fail.
+
+    Moreover, the space complexity of DFS with cycle checking would be exponential, which will loose the advantage of DFS.
+\end{remark}
+
+\begin{example}
+    Consider the Romania Travel problem. Below is an example of a search tree. 
+
+    \begin{center}
+        \includegraphics[width=0.67\linewidth]{figures/cycle-checking.png}
+    \end{center}
+
+    The nodes coloured in red are the explored ancestors, and the nodes coloured yellow are the nodes already exploare in another branch.
+\end{example}
+
+\subsubsection{Optimal Cost}
+
+If we reject a path $\langle p, c \rangle$ because we have previously seen state $c$ via a different path $p'$, it could be that $\langle p, c \rangle$ is a cheaper path to $c$ than $p$
+
+The solution would be keeping track of each state as well as the \bred{known minimum cost} of a path to that state. 
+
+\begin{listu}
+    \item If a more \bred{expensive} path to a previously seen state is found, do not add the corresponding node to the \Frontier.
+    \item If a cheaper path to a previously seen state is found, add the corresponding node to the \Frontier and
+    \begin{listu}
+        \item \itblue{Remove} other more \itblue{expensive} nodes to the same state from the \Frontier, OR
+        \item Lazily, \itblue{ignore} these more expensive nodes when/if they are removed for expansion.
+    \end{listu}
+\end{listu}
+
+\subsection{Uniform-Cost Search (UCS)}
+
+The \term{Uniform-Cost Search} (UCS) algorithm is a variant of BFS that uses \itblue{cost} as the criterion for selecting the next node to expand. UCS expands the node with the \itblue{lowest path cost} $g(n)$, where $g(n)$ is the cost of the path from the initial node to node $n$.
+
+\begin{definition}[Uniform-Cost Search]\index{Uniform-Cost Search}\label{def:ucs}
+    \term{Uniform-Cost Search} is a search strategy that expands the node with the lowest path cost $g(n)$.
+\end{definition}
+
+\begin{remark}
+    UCS is a \itblue{generalization} of BFS. BFS is UCS with a \itblue{constant cost} of 1 for each action.
+\end{remark}
+
+\begin{center}
+    \includegraphics[width=0.45\linewidth]{figures/ucs-1.png}
+    \hfill
+    \includegraphics[width=0.45\linewidth]{figures/ucs-2.png}
+
+    {~~~}
+
+    \includegraphics[width=0.45\linewidth]{figures/ucs-3.png}
+    \hfill
+    $\dots$
+\end{center}
+
+\begin{listu}
+    \item \textbf{Completeness}
+    
+    \begin{listu}
+        \item UCS is complete under the condition that there is a \bred{non-zero constant lower-bound $\epsilon$} on the cost of every action.
+
+        That is, each transition from one state to another must have a cost of at least $\epsilon > 0$.
+
+        \item Under  this condition the cost of the nodes chosen to be expanded will be non-decreasing and eventually we will expand all nodes with cost equal to the cost of a solution path
+    \end{listu}
+
+    \item \textbf{Optimality}
+    
+    \begin{listu}
+        \item UCS finds the \bred{minimum cost} solution if each transition has cost $\ge \epsilon > 0$.
+        
+        \item UCS explores nodes in the search space in non-decreasing order of cost. So it must find minimum cost path to a goal before finding any higher costs paths leading to a goal.
+    \end{listu}
+
+    \begin{proof}
+        UCS is optimal if the cost of each action is $\ge \epsilon > 0$.
+
+        \begin{remark}[Intuition]
+            \begin{listu}
+                \item nodes are expanded in order of \bred{non-decreasing cost}.
+                \item \bred{All nodes} with cost strictly less than $C$ are expanded before \bred{all nodes} with cost equal to $C$.
+                \item The first path found to a state is the \bred{cheapest} path to that state (be it a goal state or not).
+            \end{listu}
+        \end{remark}
+
+        In all of the following lemmas the assumption is that each transition has cost $\ge \epsilon > 0$.
+
+        \begin{lemma}
+            Let $c(n)$ denote the cost of a node n on the \Frontier. If a node $n_2$ is expanded after $n_1$ by UCS, then $\color{darkRed}c(n_1) \le c(n_2)$.
+        \end{lemma}
+
+        \begin{lemma}
+            Let $n$ be an arbitrart node expanded by UCS in a search tree. All the nodes in the search space with cost strictly less than $c(n)$ are expanded \bred{before $n$}.
+        \end{lemma}
+
+        \begin{lemma}
+            Let $p$ be the first path UCS find whose final state is a state $s$. Then $p$ is a \bred{minimal cost} path to $s$.
+        \end{lemma}
+    \end{proof}
+\end{listu}
+
+\subsubsection{Properties of UCS}
+
+The time and space complexity of UCS are both \[
+    \bigo{ b^{\floor{C^* / \epsilon} + 1} }
+\]
+
+\begin{listu}
+    \item UCS has to expand \itblue{all nodes} with cost \bred{less} than $C^*$ and potentially \itblue{all nodes} with cost \bred{equal} to $C^*$. 
+    \item In the worst case, there are $\bigo{ b^{\floor{C^* / \epsilon} + 1} }$ nodes with cost \itblue{less than or equal to} $C^*$. 
+\end{listu}
+
+\begin{remark}
+    in the worst case, there are $\color{darkRed} \floor{C^* / \epsilon}$ actions on the optimal path, and each state has $b$ successors, where $C^*$ denotes the cost of the optimal solution path. We also assume each action has cost $\ge \epsilon > 0$.
+\end{remark}
