@@ -7,7 +7,7 @@
 In order to formalize a problem as a search problem, we need to define the following:
 
 \begin{listo}
-    \item \term{eState Space}: A state is a representation of a configuration of the problem domain. The state space is the set of all states included in our model of the problem.
+    \item \term{State Space}: A state is a representation of a configuration of the problem domain. The state space is the set of all states included in our model of the problem.
     \item \term{Initial State}: The starting configuration.
     \item \term{Goal State}: The configuration one wants to achieve. 
     \item \term{Actions} (or \term{State Space Transitions}): Allowed changes to move from one state to another.
@@ -194,4 +194,110 @@ Optionally, we may use the following:
             \end{listu}
         \end{proof}
     \end{solution}
+\end{listo}
+
+\section{UCS and A* \& Heuristics}
+
+\subsection{Problems}
+
+\begin{listo}
+    \item Consider the search problem of figure 1. Execute UCS (without cycle-checking) starting from node $S$, and the goal node being $G$.
+
+    % TODO: Insert Figure 1
+
+    \begin{table}[ht!]
+        \centering
+
+        \begin{tabular}{r | l}
+            (Node, Path)  & Frontier                                   \\ \hline
+                          & $\{ (S, 0) \}$                             \\
+            $(S, S)$      & $\{ (SP, 1), (SD, 3), (SE, 9) \}$          \\
+            $(P, SP)$     & $\{ (SD, 3), (SE, 9), (SPQ, 16) \}$        \\
+            $(D, SD)$     & $\{ (SDE, 5), (SE, 9), (SPQ, 16) \}$       \\
+            $(E, SDE)$    & $\{ (SDEH, 6), (SE, 9), (SPQ, 16) \}$      \\
+            $(H, SDEH)$   & $\{ (SE, 9), (SDEHQ, 10), (SPQ, 16) \}$    \\
+            $(E, SE)$     & $\{ (SEH, 10), (SDEHQ, 10), (SPQ, 16) \}$  \\
+            $(H, SEH)$    & $\{ (SDEHQ, 10), (SEHQ, 14), (SPQ, 16) \}$ \\
+            $(Q, SDEHQ)$  & $\{ (DEHQG, 11), (SEHQ, 14), (SPQ, 16) \}$ \\
+            $(G, SDEHQG)$ & $\{ (SEHQ, 14), (SPQ, 16) \}$              \\
+        \end{tabular}
+    \end{table}
+
+    \item A tracing example of executing A* (without cycle-checking) on the problem of figure 2
+    
+    % TODO: Insert Figure 2
+
+    Each cost is depicted as the cost to get that node plus the heuristic cost at that node. Next node to be expanded is highlighted in blue. Here we maintain (Node, Path, Cost) as the tuple in the frontier.
+
+    \begin{table}[ht!]
+        \centering
+
+        \begin{tabular}{||c|c||}
+            \hline
+            Node Popped & Frontier                                                                                                     \\ \hline \hline
+                        & $\{ {\color{blue}(A,A, 0+8=8)} \}$                                                                           \\ \hline
+            $A$         & $\{ (C,AC, 1+7=8), {\color{blue}(B,AB, 4+3=7)} \}$                                                           \\ \hline
+            $B$         & $\{ {\color{blue}(C,AC, 1+7=8)}, (C,ABC, 6+7=13), (D,ABD, 10+0=10) \}$                                       \\ \hline
+            $C$         & $\{ {\color{blue}(B,ACB, 3+3=6)}, (D,ACD, 10+0=10), (C,ABC, 6+7=13), (D,ABD, 10+0=10) \}$                    \\ \hline
+            $B$         & $\{ (C,ACBC, 5+7=12), {\color{blue}(D,ACBD, 9+0=9)}, (D,ACD, 10+0=10), (C,ABC, 6+7=13), (D,ABD, 10+0=10) \}$ \\ \hline
+        \end{tabular}
+    \end{table}
+
+    \begin{listo}
+        \item Execute A* with cycle-checking on the problem of figure 2.
+
+        \begin{solution} \begin{table}[ht!]
+            \centering
+        
+            \begin{tabular}{||c|c||}
+                \hline
+                Node Popped & Frontier                                                                                                     \\ \hline \hline
+                            & $\{ {\color{blue}(A,A, 0+8=8)} \}$                                                                           \\ \hline
+                $A$         & $\{ (C,AC, 1+7=8), {\color{blue}(B,AB, 4+3=7)} \}$                                                           \\ \hline
+                $B$         & $\{ {\color{blue}(C,AC, 1+7=8)}, (D,ABD, 10+0=10) \}$                                       \\ \hline
+                $C$         & $\{ {\color{blue}(B,ACB, 3+3=6)}, (D,ABD, 10+0=10) \}$                    \\ \hline
+                $B$         & $\{ (C,ACBC, 5+7=12), {\color{blue}(D,ACBD, 9+0=9)} \}$ \\ \hline
+            \end{tabular}
+        \end{table} \end{solution}
+
+        \item Prove that the A* Search algorithm with cycle-checking is optimal when a consistent heuristic is utilized.
+
+        \item In the search problem below, we have listed 5 heuristics. Indicate whether each heuristic is admissible and/or consistent in the table below.
+
+        \begin{remark}
+            \begin{listu}
+                \item Consistent: $h(v_i) \le h(v_j) + c(v_i, v_j)$
+
+                \item Admissible: $h(v) \le c^*(v)$
+            \end{listu}
+        \end{remark}
+
+        \begin{table}[ht!]
+            \centering
+        
+            \begin{tabular}{||c|c|c|c|c|c|c||}
+                \hline
+                      & S & A & B & G & Admissible            & Consistent            \\ \hline \hline
+                $h_1$ & 0 & 0 & 0 & 0 & \color{primary} True  & \color{primary} True  \\ \hline
+                $h_2$ & 8 & 1 & 1 & 0 & \color{primary} True  & \color{primary} False \\ \hline
+                $h_3$ & 9 & 3 & 2 & 0 & \color{primary} True  & \color{primary} False \\ \hline
+                $h_4$ & 6 & 3 & 1 & 0 & \color{primary} True  & \color{primary} True  \\ \hline
+                $h_5$ & 8 & 4 & 2 & 0 & \color{primary} False & \color{primary} False \\ \hline
+            \end{tabular}
+        \end{table}
+
+        \item Given that a heuristic $h$ is such that $h(s_g) = 0$ where $s_g$ is any goal state, prove that if $h$ is consistent, then it must be admissible
+
+        \item \begin{enumerate}[label=\alph*)]
+            \item Provide a counter-example to show that the \textbf{Greedy Best-First Search} algorithm without cycle-checking is incomplete.
+
+            \begin{solution}
+                \begin{center} \begin{tikzpicture}
+                    \node[draw,circle] (S0) at (0, 0) {$S_0$};
+                \end{tikzpicture} \end{center}
+            \end{solution}
+            
+            \item Provide a counter-example to show that Greedy Best-First Search (with or without cycle-checking) is not optimal.
+        \end{enumerate}
+    \end{listo}
 \end{listo}
