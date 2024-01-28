@@ -789,5 +789,92 @@ The time and space complexity of UCS are both \[
 \end{listu}
 
 \begin{remark}
-    in the worst case, there are $\color{darkRed} \floor{C^* / \epsilon}$ actions on the optimal path, and each state has $b$ successors, where $C^*$ denotes the cost of the optimal solution path. We also assume each action has cost $\ge \epsilon > 0$.
+    In the worst case, there are $\color{darkRed} \floor{C^* / \epsilon}$ actions on the optimal path, and each state has $b$ successors, where $C^*$ denotes the cost of the optimal solution path. We also assume each action has cost $\ge \epsilon > 0$.
 \end{remark}
+
+\section{Heuristic Search}
+
+\subsection{Heuristic Search Strategies}
+
+Uniform search methods never \itblue{look ahead} to the goal. They enever try to evaluate which nodes on the \Frontier are the most promising. Heuristic search methods, on the other hand, use \itblue{domain-specific knowledge} to evaluate which nodes are the most promising.
+
+\begin{listu}
+    \item If we are concerned about the \bred{cost} of the solution, we might want to consider how costly it's to extend a node so that it reaches a goal node. 
+    
+    That is, the cost of getting from the node to a goal.
+
+    \item If we are concerned about \bred{minimizing computation} in search we might want to consider how easy it is to extend that node so that it reaches a goal. 
+    
+    That is, how hard is it to get from the node to a goal. 
+\end{listu}
+
+The idea of a heuristic search is to develop a \itblue{domain-specific} \term{heuristic function} $h(n)$ that estimates the cost of the cheapest path from node $n$ to a goal node. $h(n_1) < h(n_2)$ means that we \bred{guess} $n_1$ is \itblue{closer} to a goal than $n_2$.
+
+\begin{definition}[Heuristic Function]\index{Heuristic Function}\label{def:heuristic-function}
+    A \term{heuristic function} $h(n)$ is a function that estimates the cost of the cheapest path from node $n$ to a goal node.
+\end{definition}
+
+\begin{remark}
+    $h(n)$ is a function \bred{only} of the state of $n$. That is, if the states of $n_1$ and $n_2$ are the same, then $h(n_1) = h(n_2)$. 
+\end{remark}
+
+Sometimes, we might even use a \itblue{state}, rather than a node, as the argument of the heuristic function.
+
+\begin{remark}
+    $h$ \bred{must} be defined so that $h(n) = 0$ for any goal node $n$.
+\end{remark}
+
+There are different ways of guessing heuristic cost in different domains. For example, Alpha Go exploited machine learning techniques to compute the heuristic estimate of a state (go board configuration).
+
+\begin{example}
+    Consider the Romania Travel problem. The heuristic function $h(n)$ is defined to be the Euclidean distance between the current city and Bucharest.
+
+    \begin{center}
+        \includegraphics[width=0.67\linewidth]{figures/heuristic-function.png}
+    \end{center}
+\end{example}
+
+\subsection{Greedy Best-First Search (GBFS)}
+
+Greedy Best-First Search (GBFS) uses $h(n)$ to rank the nodes on the \Frontier. It always expands the node with the \itblue{lowest heuristic cost} $h(n)$.
+
+\begin{definition}[Greedy Best-First Search]\index{Greedy Best-First Search}\label{def:gbfs}
+    \term{Greedy Best-First Search} is a search strategy that expands the node with the lowest heuristic cost $h(n)$.
+\end{definition}
+
+GBFS greedily tries to find the \itblue{cheapest} path to a goal. It \itblue{ignores} the cost of $n$, so it can be \bred{lead astray} by paths that look promising based on $h(n)$ but actually have a high cost.
+
+\begin{center}
+    \tikzexternalenable
+    \begin{tikzpicture}[
+        graph-node/.style={circle, draw=black, line width=0.5pt, minimum size=0.67cm},
+    ]
+        \node[graph-node] (s) at (0, 0) {$s$};
+        \node[graph-node] (n1) at (-2, -1) {$n_1$};
+        \node[graph-node] (n2) at (-1, -2) {$n_2$};
+        \node[graph-node] (n3) at (2, -1) {$n_3$};
+        \node[graph-node] (g) at (0, -3) {$g$};
+
+        \draw[thick,darkGreen,-latex] (s) -- (n1) node[midway] {$10$};
+        \draw[thick,darkGreen,-latex] (n1) -- (n2) node[midway] {$10$};
+        \draw[thick,darkGreen,-latex] (n2) -- (g) node[midway] {$10$};
+        \draw[thick,darkRed,-latex] (s) -- (n3) node[midway] {$100$};
+        \draw[thick,darkRed,-latex] (n3) -- (g) node[midway] {$10$};
+    \end{tikzpicture}
+\end{center}
+
+Greedy search can be very efficient in practice at finding solutions, but it requires developing a good heuristic function. Greedy search is \itblue{not complete} and \itblue{not optimal}. The solution returned by a greedy search can be \bred{very far from optimal}.
+
+\begin{example}
+    GBFS will be stuck in the following graph, where the optimal heuristic leads to an infinite loop, while only the suboptimal heuristic leads to the goal.
+
+    % TODO: Add graph
+\end{example}
+
+\subsection{A* Search}
+
+A* Search is a variant of UCS that uses $h(n)$ to rank the nodes on the \Frontier. It always expands the node with the \itblue{lowest evaluation cost} \[ f(n) = g(n) + h(n), \] where $g(n)$ is the cost of the path from the initial node to node $n$. Here, $f(n)$ is an estimate of the cost of getting to the goal through $n$.
+
+\begin{definition}[A* Search]\index{A* Search}\label{def:astar}
+    \term{A* Search} is a search strategy that expands the node with the lowest evaluation cost \[ f(n) = g(n) + h(n). \]
+\end{definition}
