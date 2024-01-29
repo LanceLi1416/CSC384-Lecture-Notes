@@ -10,7 +10,7 @@ Searching is one of the most \itblue{fundemental techniques} in AI, underlying s
     \begin{listu}
         \item Useful as ageneral algorithmic technique for solving problems, both in AI and in other areas.
 
-        \item Outperform humans in some areas (e.g. games). 
+        \item Outperform humans in some areas (e.g. games).
 
         \item Practical:
 
@@ -21,9 +21,9 @@ Searching is one of the most \itblue{fundemental techniques} in AI, underlying s
 
         \item Some critical aspects of intelligent behaviour, e.g., planning, can be cast as search.
     \end{listu}
-    
+
     \item \textbf{Limitations}
-    
+
     \begin{listu}
         \item Only shows how to solve the problem once we have it correctly formulated.
     \end{listu}
@@ -35,32 +35,32 @@ Searching is one of the most \itblue{fundemental techniques} in AI, underlying s
 
 \begin{listu}
     \item Necessary components
-    
+
     \begin{listo}
-        \item \bred{State Space}: A \term{state} is a representation of a \itblue{configuration} of the problem domain. The state space is the \itblue{set of all states} include in our model of the problem. 
-        \item \bred{Initial State}: The starting configuration. 
-        \item \bred{Goal State}: The configuration one wants to achieve. 
-        \item \bred{Actions} (or State Space Transitions): Allowed changed to move from one state to another. 
+        \item \bred{State Space}: A \term{state} is a representation of a \itblue{configuration} of the problem domain. The state space is the \itblue{set of all states} include in our model of the problem.
+        \item \bred{Initial State}: The starting configuration.
+        \item \bred{Goal State}: The configuration one wants to achieve.
+        \item \bred{Actions} (or State Space Transitions): Allowed changed to move from one state to another.
     \end{listo}
 
-    \item Optional Ingredients 
-    
+    \item Optional Ingredients
+
     \begin{listu}
-        \item \itblue{Costs}: Representing the cost of moving from state to state. 
-        \item \itblue{Heuristics}: Help guide the search process. 
+        \item \itblue{Costs}: Representing the cost of moving from state to state.
+        \item \itblue{Heuristics}: Help guide the search process.
     \end{listu}
 \end{listu}
 
-Once a search problem is formalized, there are a number of algorithms one can use to solve it. A \term{solution} is a \itblue{sequence of actions} or moves that can transform the \bred{initial state} into a \bred{goal state}. 
+Once a search problem is formalized, there are a number of algorithms one can use to solve it. A \term{solution} is a \itblue{sequence of actions} or moves that can transform the \bred{initial state} into a \bred{goal state}.
 
 \begin{example}[Romania Travel]
-    We want to travel in Romania from Arad to Bucharest as fast as possible. 
+    We want to travel in Romania from Arad to Bucharest as fast as possible.
 
     \begin{center}
         \includegraphics[width=0.75\linewidth]{figures/Romania Travel.png}
     \end{center}
 
-    Each state would be a city. 
+    Each state would be a city.
 
     \begin{listu}
         \item \bred{State Space}: The set of all cities on the map.
@@ -83,7 +83,7 @@ Once a search problem is formalized, there are a number of algorithms one can us
         \item \bred{State Space}: The set of all pairs of numbers $(a, b)$ where $a$ is the amount of water in the 3-liter jug and $b$ is the amount of water in the 4-liter jug.
         \item \bred{Initial State}: $(0, 4)$.
         \item \bred{Goal State}: $(2, 0)$, $(2, 1)$, $(2, 2)$, $(2, 3)$, $(2, 4)$.
-        \item \bred{Actions}: 
+        \item \bred{Actions}:
         \begin{listu}
             \item Fill the 3-liter jug from the tap.
             \item Fill the 4-liter jug from the tap.
@@ -100,7 +100,7 @@ Once a search problem is formalized, there are a number of algorithms one can us
         \begin{listo}
             \item Can we reach all states fron any given start state?
 
-            \item Will all actions result in a change of state? 
+            \item Will all actions result in a change of state?
 
             \bred{No!} Imagine you have $(3, 4)$ and you try to fill the 3-liter jug from the tap. You will still have $(3, 4)$.
         \end{listo}
@@ -109,15 +109,15 @@ Once a search problem is formalized, there are a number of algorithms one can us
 
 % \subsubsection{More Complex Situations}
 
-In more complex situations, 
+In more complex situations,
 
 \begin{listu}
-    \item Actions may lead to \bred{multiple states}. 
-    
+    \item Actions may lead to \bred{multiple states}.
+
     For example, filpping a coin may lead to heads or tails.
 
     \item We may not be \bred{sure of a given state}
-    
+
     For example, when prize is behind door 1, 2, or 3.
 
     \item Such situations require techniques for reasoning under uncertainty: assign probabilities to given outcomes.
@@ -132,7 +132,7 @@ In more complex situations,
 Assuming a finite search space, the
 
 \begin{listu}
-    \item \bred{vertices} represent states in the search space; and the 
+    \item \bred{vertices} represent states in the search space; and the
     \item \bred{edges} represent transitions resulting from actions (or successor functions).
 \end{listu}
 
@@ -146,7 +146,7 @@ Assuming a finite search space, the
         \item Each edge represents an action.
         \item The root node represents the initial state.
         \item The leaf nodes represent goal states.
-    \end{listu} 
+    \end{listu}
 \end{definition}
 
 A search tree reflects the behaviour of an algorithm as it walks through a search problem. It has two important properties:
@@ -161,16 +161,16 @@ A search tree reflects the behaviour of an algorithm as it walks through a searc
 \end{remark}
 
 \begin{remark}
-    It is important to distinguish between \bred{states} from \bred{nodes}. 
+    It is important to distinguish between \bred{states} from \bred{nodes}.
 
     \begin{listu}
-        \item A \bred{state} represents a possible configuration of the world. 
-        \item A \itblue{node} is a data structure constituting part of a search tree. It includes 
+        \item A \bred{state} represents a possible configuration of the world.
+        \item A \itblue{node} is a data structure constituting part of a search tree. It includes
         \begin{listu}
-            \item a \bred{state} and 
-            \item the \bred{parent node}, 
-            \item the \bred{action} that led to this node, and 
-            \item the \bred{cost} of the path from the initial node to this node. 
+            \item a \bred{state} and
+            \item the \bred{parent node},
+            \item the \bred{action} that led to this node, and
+            \item the \bred{cost} of the path from the initial node to this node.
         \end{listu}
         \item  Intuitively speaking, each node corresponds with a path from the initial state to the node's state.
         \item Two \bred{different nodes} are allowed to contain the \bred{same world state}.
@@ -181,34 +181,34 @@ A search tree reflects the behaviour of an algorithm as it walks through a searc
 
 \begin{listu}
     \item \textbf{Input}
-    
+
     \begin{listu}
         \item \textbf{Initial node}
 
         \item \textbf{Successor Function} $S(x)$
-        
-        returns the set of nodes that can be reached from node $c$ via a single action. 
+
+        returns the set of nodes that can be reached from node $c$ via a single action.
 
         \item \textbf{Goal Test Function} $G(x)$
-        
-        returns true if node $c$ satisfies the goal condition. 
+
+        returns true if node $c$ satisfies the goal condition.
 
         \item \textbf{Action Cost Function} $C(x, a, y)$
-        
+
         returns the cost of moving from node $x$ to node $y$ using action $a$.
 
-        Note that $C(x, a, y) = \infty$ if $y$ is not reachable from $a$ via $a$. 
+        Note that $C(x, a, y) = \infty$ if $y$ is not reachable from $a$ via $a$.
     \end{listu}
 
     \item \textbf{Output}
-    
+
     \begin{listu}
-        \item A \itblue{sequence of actions} that transforms the initial node satisfying the goal test. 
+        \item A \itblue{sequence of actions} that transforms the initial node satisfying the goal test.
         \item The sequence might be, \term{optimal in cost} for some algorithms, \term{optimal in length} for some algorithms, come with \bred{no optimality} guarantees from other algorithms.
     \end{listu}
 
     \item \textbf{Procedure}
-    
+
     \begin{listu}
         \item Put nodes have not yet expanded in a list called the \term{\Frontier} (or \term{Open}).
         \item Initially, only the \itblue{initial node} is in the \Frontier.
@@ -220,7 +220,7 @@ A search tree reflects the behaviour of an algorithm as it walks through a searc
 % \newpage
 \begin{algorithm}
     \caption{Tree Search Algorithm}
-    
+
     \begin{algorithmic}[1]
         \Function{Tree-Search}{Frontier, Successors, Goal?}
             % If frontier is empty, return failure
@@ -249,25 +249,25 @@ Note that the search terminates only when a goal node is expanded into the \Fron
 
 \begin{listu}
     \item \textbf{Completeness}
-    
+
     \begin{listu}
         \item A search algorithm is \term{complete} if it always finds a solution if one exists.
     \end{listu}
 
     \item \textbf{Optimality}
-    
+
     \begin{listu}
         \item A search algorithm is \term{optimal} if it always finds a solution with the lowest cost.
     \end{listu}
 
     \item \textbf{Time Complexity}
-    
+
     \begin{listu}
-        \item The \term{time complexity} of a search algorithm is the number of nodes it expands or generates. 
+        \item The \term{time complexity} of a search algorithm is the number of nodes it expands or generates.
     \end{listu}
 
     \item \textbf{Space Complexity}
-    
+
     \begin{listu}
         \item The \term{space complexity} of a search algorithm is the maximum number of nodes it stores in memory.
     \end{listu}
@@ -279,7 +279,7 @@ Note that the search terminates only when a goal node is expanded into the \Fron
 
 The \bred{order} of nodes in the \Frontier determines the behaviour of the search algorithm. It determines whether or not the algorithm is complete, optimal, and how much time and space it requires. Search algorithms differ in their selection rule, but they all keep the \Frontier as an ordered set. The question of which node to select next from the \Frontier is now equivalent to the question of how to order the \Frontier.
 
-There are strategies that adpot a \itblue{fixed-rule} for selecting the next node to be expanded. These strategies are called \term{uninformed search strategies} because they do \bred{not} use any \itblue{domain specific informatioin} about the problem other than the definition of the problem itself. These strategies include Breadth-First Search, Depth-First Search, Uniform-Cost Search, Depth-Limited Search, and Iterative Deepening Search. 
+There are strategies that adpot a \itblue{fixed-rule} for selecting the next node to be expanded. These strategies are called \term{uninformed search strategies} because they do \bred{not} use any \itblue{domain specific informatioin} about the problem other than the definition of the problem itself. These strategies include Breadth-First Search, Depth-First Search, Uniform-Cost Search, Depth-Limited Search, and Iterative Deepening Search.
 
 In those course, it is assumed that the graph we are searching is \itblue{explicitly} represented as an adjacency list (or adjacency matrix). However, this will \bred{not} work when there an exponential number of nodes and edges. In AI applications, there are typically an exponential number of nodes, making it impossible to explicitely represent them all. AI search algorithms work with \itblue{implicitly} defined state spaces, where actions are compacted as \itblue{successor state functions}, and nodes must contaion enough information to allow the successor state function to be applied.
 
@@ -329,21 +329,21 @@ BFS explores the search tree \itblue{level by level}. It place the children of t
 
 \begin{listu}
     \item \textbf{Completeness}
-    
+
     \begin{listu}
         \item BFS is \term{complete} if the \bred{branching factor} is \itblue{finite}.
-        \item The length of the path (from the initial node to the node removed from the \Frontier) is \itblue{non-decreasing}, as we replace eac expanded node with path langth $k$ with a node with path length of $k + 1$. 
+        \item The length of the path (from the initial node to the node removed from the \Frontier) is \itblue{non-decreasing}, as we replace eac expanded node with path langth $k$ with a node with path length of $k + 1$.
     \end{listu}
 
     \item \textbf{Optimality}
-    
-    \begin{listu}
-        \item BFS gives the \bred{shortest length solution}. 
 
-        All nodes with shorter paths are expanded prior to any node with longer path. We examine all paths of length $< k$ before all paths of length $k$. Thus, if there is a solution with length $k$, we will find it before longer solutions. 
+    \begin{listu}
+        \item BFS gives the \bred{shortest length solution}.
+
+        All nodes with shorter paths are expanded prior to any node with longer path. We examine all paths of length $< k$ before all paths of length $k$. Thus, if there is a solution with length $k$, we will find it before longer solutions.
 
         \item BFS is \bred{not optimal} in terms of \itblue{cost}.
-        
+
         BFS does not take into account the cost of the path. It is possible that a longer path has a lower cost than a shorter path.
     \end{listu}
 \end{listu}
@@ -364,7 +364,7 @@ Let $b$ be the maximum branching factor and $d$ be the depth of the shallowest g
     \item \textbf{Space Complexity} \[
         \bigo{b^{d+1}}
     \]
-    
+
     In the worst case, only the last node of depth $d$ satisfies the goal. So all nodes at depth $d$ except the last one will be expanded by the search and each such expansion will add up to $b$ new nodes to the \Frontier.
 \end{listu}
 
@@ -421,15 +421,15 @@ DFS explores the search tree \itblue{branch by branch}. It place the children of
 
 \begin{listu}
     \item \textbf{Completeness}
-    
+
     \begin{listu}
         \item DFS is \term{not complete}. \bred{Infinite} paths cause incompleteness.
         \item This is because DFS does not keep track of visited nodes, so it can get stuck in a loop. An infinite search space can also cause DFS to run forever.
-        \item We can prune paths with \bred{cycles} to get completeness, if state space is finite. 
+        \item We can prune paths with \bred{cycles} to get completeness, if state space is finite.
     \end{listu}
 
     \item \textbf{Optimality}
-    
+
     \begin{listu}
         \item DFS is \term{not optimal} in terms of \itblue{length} or \itblue{cost}.
         \item DFS returns the \itblue{first} solution it finds, which may not be the \itblue{shortest} or \itblue{cheapest} solution.
@@ -447,21 +447,21 @@ Let $b$ be the maximum branching factor and $m$ be the maximum depth of the sear
 
     \begin{listu}
         \item This is \bred{very bad} if $m$ is much larger than $d$, but if there are \itblue{mant solution paths}, DFS may be much faster than BFS.
-        \item Using \term{Heuristics}, we can determine which successor to explore first. 
+        \item Using \term{Heuristics}, we can determine which successor to explore first.
     \end{listu}
 
     \item \textbf{Space Complexity} \[
         \bigo{bm}
     \]
-    
-    DFS has a \bred{linear} space complexity, which is a significant advantage. 
+
+    DFS has a \bred{linear} space complexity, which is a significant advantage.
 
     This is because DFA only explores a single branch of the search tree at a time. \Frontier only contains the current node $v$ along with the $m$ descendants of $v$.  Each node can have at most $b$ unexplored siblings and there are at most $m$ nodes on the current branch, which gives $\bigo{bm}$.
 \end{listu}
 
 \subsection{Depth-Limited Search (DLS)}
 
-Despite DFS being \itblue{incomplete} and \itblue{non-optimal}, it has a great advantage over BFS: \itblue{linear space complexity}. This makes it possible to use DFS in situations where BFS would run out of memory. 
+Despite DFS being \itblue{incomplete} and \itblue{non-optimal}, it has a great advantage over BFS: \itblue{linear space complexity}. This makes it possible to use DFS in situations where BFS would run out of memory.
 
 In order to address the incompleteness of DFS, we can impose a \itblue{depth limit} $D$ on the search. This means that we will only explore paths of length $D$ or less. If we reach a node at depth $D$ that is not a goal node, we will \itblue{backtrack} and explore other paths. This is called \term{Depth-Limited Search} (DLS).
 
@@ -470,14 +470,14 @@ In order to address the incompleteness of DFS, we can impose a \itblue{depth lim
 \end{definition}
 
 \begin{listu}
-    \item {\color{darkGreen}\textbf{Benefit}:} DLS overcomes the infinite length paths issue, 
-    \item \bred{Limitation:} DLS only finds a solution if the \itblue{depth limit} $D$ is greater than or equal to the depth of the shallowest goal node $d$. 
+    \item {\color{darkGreen}\textbf{Benefit}:} DLS overcomes the infinite length paths issue,
+    \item \bred{Limitation:} DLS only finds a solution if the \itblue{depth limit} $D$ is greater than or equal to the depth of the shallowest goal node $d$.
 \end{listu}
 
 \begin{remark}
     The root of a search tree is at depth 0. A path consisting onlty of the root node has length 0.
 
-    Recall that the length of a path is the number of actions (edges) in the path. 
+    Recall that the length of a path is the number of actions (edges) in the path.
 \end{remark}
 
 \begin{center}
@@ -517,7 +517,7 @@ In order to address the incompleteness of DFS, we can impose a \itblue{depth lim
 
 DLS is \itblue{complete} if the \itblue{depth limit} $D$ is greater than or equal to the depth of the shallowest goal node $d$. However, we do not know $d$ in advance. We can start at a depth limit $D = 0$, and iteratively \bred{increase} $D$ until we find a solution. We stop if {\color{darkGreen}\textbf{a solution is found}}, or the search \bred{failed without cutting off} any nodes because of the depth limit. This is called \term{Iterative Deepening Search} (IDS).
 
-Note that if no nodes were cut off, the search examined all nodes in the state space and found nosolution, hence there is no solution. 
+Note that if no nodes were cut off, the search examined all nodes in the state space and found nosolution, hence there is no solution.
 
 \begin{definition}[Iterative Deepening Search]\index{Iterative Deepening Search}\label{def:ids}
     \term{Iterative Deepening Search} is a search strategy that repeatedly applies DLS with increasing depth limits until a solution is found.
@@ -551,23 +551,23 @@ Note that if no nodes were cut off, the search examined all nodes in the state s
 
 \begin{listu}
     \item \textbf{Completeness}
-    
+
     \begin{listu}
-        \item IDS is \term{complete}. 
+        \item IDS is \term{complete}.
     \end{listu}
 
     \item \textbf{Optimality}
-    
+
     \begin{listu}
         \item IDS gives the \bred{shortest length solution}.
 
         \item IDS is \term{not optimal} in terms of \itblue{cost}, for the same reason as DFS.
-        
+
         We can make IDS optimal by doing the following:
 
         \begin{listu}
             \item Can use a \bred{cost bound} instead of depth bound.
-            \item Only expand nodes of cost \itblue{less} than the cost bound. 
+            \item Only expand nodes of cost \itblue{less} than the cost bound.
             \item Keep track of the \term{minimum cost unexpanded node} in each iteration, \itblue{increase the cost bound} to that on the next iteration.
             \item Can be \bred{computationally expensive} since need as many iterations of the search as there are distinct node costs.
         \end{listu}
@@ -583,28 +583,29 @@ Note that if no nodes were cut off, the search examined all nodes in the state s
 
     \begin{listu}
         \item This is \bred{very bad} if $d$ is much larger than $m$, but if there are \itblue{mant solution paths}, IDS may be much faster than BFS.
-        \item Using \term{Heuristics}, we can determine which successor to explore first. 
+        \item Using \term{Heuristics}, we can determine which successor to explore first.
     \end{listu}
 
     \item \textbf{Space Complexity} \[
         \bigo{bd}
     \]
-    
-    The space complexity of IDS is still linear. 
+
+    The space complexity of IDS is still linear.
 \end{listu}
 
 \begin{remark}
-    Comparing to BFS, 
+    Comparing to BFS,
 
-    \begin{itemize}
+    \begin{listu}
         \item The {\color{darkGreen}time complexity} of IDS can be better since it does not expand nodes at the solution depth, while BFS (in the worst case) must expand all the \itblue{bottom later nodes} until it expands a goal node. However, with a simple optimization BFS can achieve the \itblue{same time complexity} as IDS.
 
         \item The {\color{darkGreen}space complexity} of IDS is much better.
+
         \begin{listu}
             \item In practice, BFS can be buch better depending on the problem: effective \bred{cycle checking} can be employed with BFS
-            \item IDS cycle checking will make the space complexity as bad as BFS. 
+            \item IDS cycle checking will make the space complexity as bad as BFS.
         \end{listu}
-    \end{itemize}
+    \end{listu}
 \end{remark}
 
 \subsection{Path Checking and Cycle Checking}
@@ -628,32 +629,23 @@ Note that if no nodes were cut off, the search examined all nodes in the state s
     \]
 
     \item Paths are checked in \bred{isolation}
-    
-    \item {\color{darkGreen}\textbf{Benefit}:} Does not increase time and space commplexity. 
-    
-    \item \bred{Limitation}: Does not prune all the redundant states. 
+
+    \item {\color{darkGreen}\textbf{Benefit}:} Does not increase time and space commplexity.
+
+    \item \bred{Limitation}: Does not prune all the redundant states.
 \end{listu}
 
 \begin{example}
-    Consider the Romania Travel problem. Below is an example of a search tree. 
+    Consider the Romania Travel problem. Below is an example of a search tree.
 
-    \begin{center}
-        % \tikzexternalenable
-        % \begin{tikzpicture}
-        %     % Elipse node, black stroke, white background, text `Arad' in node
-        %     \node[draw, circle, fill=white] (Arad) at (0, 0) {Arad};
-
-        % \end{tikzpicture}
-        % \tikzexternaldisable
-        \includegraphics[width=0.67\linewidth]{figures/path-checking.png}
-    \end{center}
+    \begin{center} \includegraphics[width=0.67\linewidth]{figures/path-checking.png} \end{center}
 
     The nodes coloured in red are pruned by path checking, as they are ancestors of the current node.
 \end{example}
 
 \subsubsection{Cycle Checking}
 
-Cycle checking is also called \term{Multiple path checking}. It is a \itblue{more general} version of path checking. It checks whether a node has been expanded before, not just whether it is an ancestor of itself along the path from the initial node to the node. 
+Cycle checking is also called \term{Multiple path checking}. It is a \itblue{more general} version of path checking. It checks whether a node has been expanded before, not just whether it is an ancestor of itself along the path from the initial node to the node.
 
 \begin{definition}[Cycle Checking]\index{Cycle Checking}\label{def:cycle-checking}
     \term{Cycle Checking} is a search strategy that checks whether a node has been expanded before.
@@ -661,18 +653,18 @@ Cycle checking is also called \term{Multiple path checking}. It is a \itblue{mor
 
 \begin{listu}
     \item Keep track of \bred{all} nodes previous expanded during the search using a list called the \term{closed list}.
-    
-    \item When we expand $n_k$ to obtain successor $c$, 
-    
+
+    \item When we expand $n_k$ to obtain successor $c$,
+
     \begin{listu}
         \item Ensure that $c$ is not equal to any \itblue{previously expanded} node.
-        \item If it is, we \bred{do not add} $c$ to the \Frontier. 
+        \item If it is, we \bred{do not add} $c$ to the \Frontier.
     \end{listu}
 
     \item {\color{darkGreen}\textbf{Benefit}:} Very \itblue{effective} in pruning redundant states.
-    
-    \item \bred{Limitation}: Expensive in term of \bred{space}. 
-    
+
+    \item \bred{Limitation}: Expensive in term of \bred{space}.
+
     The space complexity is $\bigo{b^{d}}$ with optimization, and $\bigo{b^{d+1}}$ without optimization (which is the same as BFS).
 \end{listu}
 
@@ -683,7 +675,7 @@ Cycle checking is also called \term{Multiple path checking}. It is a \itblue{mor
 \end{remark}
 
 \begin{example}
-    Consider the Romania Travel problem. Below is an example of a search tree. 
+    Consider the Romania Travel problem. Below is an example of a search tree.
 
     \begin{center}
         \includegraphics[width=0.67\linewidth]{figures/cycle-checking.png}
@@ -696,7 +688,7 @@ Cycle checking is also called \term{Multiple path checking}. It is a \itblue{mor
 
 If we reject a path $\langle p, c \rangle$ because we have previously seen state $c$ via a different path $p'$, it could be that $\langle p, c \rangle$ is a cheaper path to $c$ than $p$
 
-The solution would be keeping track of each state as well as the \bred{known minimum cost} of a path to that state. 
+The solution would be keeping track of each state as well as the \bred{known minimum cost} of a path to that state.
 
 \begin{listu}
     \item If a more \bred{expensive} path to a previously seen state is found, do not add the corresponding node to the \Frontier.
@@ -733,7 +725,7 @@ The \term{Uniform-Cost Search} (UCS) algorithm is a variant of BFS that uses \it
 
 \begin{listu}
     \item \textbf{Completeness}
-    
+
     \begin{listu}
         \item UCS is complete under the condition that there is a \bred{non-zero constant lower-bound $\epsilon$} on the cost of every action.
 
@@ -743,10 +735,10 @@ The \term{Uniform-Cost Search} (UCS) algorithm is a variant of BFS that uses \it
     \end{listu}
 
     \item \textbf{Optimality}
-    
+
     \begin{listu}
         \item UCS finds the \bred{minimum cost} solution if each transition has cost $\ge \epsilon > 0$.
-        
+
         \item UCS explores nodes in the search space in non-decreasing order of cost. So it must find minimum cost path to a goal before finding any higher costs paths leading to a goal.
     \end{listu}
 
@@ -784,8 +776,8 @@ The time and space complexity of UCS are both \[
 \]
 
 \begin{listu}
-    \item UCS has to expand \itblue{all nodes} with cost \bred{less} than $C^*$ and potentially \itblue{all nodes} with cost \bred{equal} to $C^*$. 
-    \item In the worst case, there are $\bigo{ b^{\floor{C^* / \epsilon} + 1} }$ nodes with cost \itblue{less than or equal to} $C^*$. 
+    \item UCS has to expand \itblue{all nodes} with cost \bred{less} than $C^*$ and potentially \itblue{all nodes} with cost \bred{equal} to $C^*$.
+    \item In the worst case, there are $\bigo{ b^{\floor{C^* / \epsilon} + 1} }$ nodes with cost \itblue{less than or equal to} $C^*$.
 \end{listu}
 
 \begin{remark}
@@ -799,13 +791,13 @@ The time and space complexity of UCS are both \[
 Uniform search methods never \itblue{look ahead} to the goal. They enever try to evaluate which nodes on the \Frontier are the most promising. Heuristic search methods, on the other hand, use \itblue{domain-specific knowledge} to evaluate which nodes are the most promising.
 
 \begin{listu}
-    \item If we are concerned about the \bred{cost} of the solution, we might want to consider how costly it's to extend a node so that it reaches a goal node. 
-    
+    \item If we are concerned about the \bred{cost} of the solution, we might want to consider how costly it's to extend a node so that it reaches a goal node.
+
     That is, the cost of getting from the node to a goal.
 
-    \item If we are concerned about \bred{minimizing computation} in search we might want to consider how easy it is to extend that node so that it reaches a goal. 
-    
-    That is, how hard is it to get from the node to a goal. 
+    \item If we are concerned about \bred{minimizing computation} in search we might want to consider how easy it is to extend that node so that it reaches a goal.
+
+    That is, how hard is it to get from the node to a goal.
 \end{listu}
 
 The idea of a heuristic search is to develop a \itblue{domain-specific} \term{heuristic function} $h(n)$ that estimates the cost of the cheapest path from node $n$ to a goal node. $h(n_1) < h(n_2)$ means that we \bred{guess} $n_1$ is \itblue{closer} to a goal than $n_2$.
@@ -815,7 +807,7 @@ The idea of a heuristic search is to develop a \itblue{domain-specific} \term{he
 \end{definition}
 
 \begin{remark}
-    $h(n)$ is a function \bred{only} of the state of $n$. That is, if the states of $n_1$ and $n_2$ are the same, then $h(n_1) = h(n_2)$. 
+    $h(n)$ is a function \bred{only} of the state of $n$. That is, if the states of $n_1$ and $n_2$ are the same, then $h(n_1) = h(n_2)$.
 \end{remark}
 
 Sometimes, we might even use a \itblue{state}, rather than a node, as the argument of the heuristic function.
@@ -846,9 +838,7 @@ GBFS greedily tries to find the \itblue{cheapest} path to a goal. It \itblue{ign
 
 \begin{center}
     \tikzexternalenable
-    \begin{tikzpicture}[
-        graph-node/.style={circle, draw=black, line width=0.5pt, minimum size=0.67cm},
-    ]
+    \begin{tikzpicture}[graph-node/.style={circle,draw=black,line width=0.5pt,minimum size=0.67cm}]
         \node[graph-node] (s) at (0, 0) {$s$};
         \node[graph-node] (n1) at (-2, -1) {$n_1$};
         \node[graph-node] (n2) at (-1, -2) {$n_2$};
@@ -914,39 +904,39 @@ A* Search is a variant of UCS that uses $h(n)$ to rank the nodes on the \Frontie
 
 \begin{listu}
     \item \textbf{Completeness}
-    
+
     \begin{theorem}[Completeness of A* Search]\label{thm:completeness-of-astar}
-        A* will always find a solution if one exists as long as 
+        A* will always find a solution if one exists as long as
 
         \begin{listu}
             \item the branching factor is \itblue{finite};
-            \item every action has a \itblue{finite cost} greater than $\epsilon > 0$; and 
-            \item $h(n)$ is \itblue{finite} for every node $n$ that can be extended to \bred{reach a goal node}. 
+            \item every action has a \itblue{finite cost} greater than $\epsilon > 0$; and
+            \item $h(n)$ is \itblue{finite} for every node $n$ that can be extended to \bred{reach a goal node}.
         \end{listu}
     \end{theorem}
 
     \begin{proof}
-        If a solution $n$ exists, then at all times either 
+        If a solution $n$ exists, then at all times either
         \begin{listu}
-            \item $n$ has been expanded by A*, or 
+            \item $n$ has been expanded by A*, or
             \item an ancestor of $n$ is on the \Frontier.
         \end{listu}
 
-        Suppose the latter holds, and let the ancestor on the \Frontier~ be $n_i$. 
+        Suppose the latter holds, and let the ancestor on the \Frontier~ be $n_i$.
 
-        Then, $n_i$ must have a finite $f$-value. 
+        Then, $n_i$ must have a finite $f$-value.
 
         As A* continues to run, the $f$-value of the nodes on the \Frontier~eventually \bred{increase}. So, eventually, either A* terminates because it found a solution, or $n_i$ becomes the node \bred{on the \Frontier~with the lowest $f$-value}.
 
         If $n_i$ is expanded, then either $n_i - n$ and A* returns $n$ as a solution, or $n_i$ is replaced by its successors, one of which $n_{i+1}$ is a \itblue{closer ancestor} of $n$.
 
-        Applying the same argument to $n_{i+1}$, we see that if A* continues to run without finding a solution, it will \bred{eventually expand every ancestor of $n$}, including $n$ itself. 
+        Applying the same argument to $n_{i+1}$, we see that if A* continues to run without finding a solution, it will \bred{eventually expand every ancestor of $n$}, including $n$ itself.
 
         Therefore, A* will eventually return a solution if one exists.
     \end{proof}
 
     \item \textbf{Optimality}
-    
+
     \begin{definition}[Asmissibility]\index{Asmissibility}\label{def:asmissibility}
         Let $h^*(n)$ be the cost of an optimal path from $n$ to a goal node ($\infty$ if there is no path). An \term{admissible} heuristic is a heuristic that satisfies the following condition for all nodes $n$ in the search space: \[
             h(n) \le h^*(n)
@@ -956,21 +946,22 @@ A* Search is a variant of UCS that uses $h(n)$ to rank the nodes on the \Frontie
     In other words, an admissible heuristic is a heuristic that \bred{never overestimates} the cost of reaching a goal node from $n$.
 
     To achieve optimality, we must pou come conditions on $h(n)$ and the search space.
+
     \begin{listu}
         \item Each action in the search space must have a \itblue{cost $\ge \epsilon > 0$}.
         \item $h$ must be \itblue{admissible}.
     \end{listu}
 
-    This way, the search will not miss any promising paths. If it really is cheap to get to a goal via $n$ (i.e., both $g(n)$ and $h^*(n)$ are low), then $f(n)$ is also low, and eventually $n$ will be expanded. 
+    This way, the search will not miss any promising paths. If it really is cheap to get to a goal via $n$ (i.e., both $g(n)$ and $h^*(n)$ are low), then $f(n)$ is also low, and eventually $n$ will be expanded.
 
     \begin{example}
-        Consider when there are two goal nodes, $g_1$ and $g_2$, with $\textsc{Cost}(g_1) < \textsc{Cost}(g_2)$. Let $n$ be a node on the path to $g_1$. 
+        Consider when there are two goal nodes, $g_1$ and $g_2$, with $\textsc{Cost}(g_1) < \textsc{Cost}(g_2)$. Let $n$ be a node on the path to $g_1$.
 
         Then, by having an admissible heuristic, we will always expand $n$ before expanding any node on the path to $g_2$ (even if $g_2$ itself is on the \Frontier).
     \end{example}
 
     \begin{proposition}\label{prop:optimal-cost}
-        A* with an admissible heuristic never expands a node with $f$-value greater than the cost of an optimal solution. 
+        A* with an admissible heuristic never expands a node with $f$-value greater than the cost of an optimal solution.
     \end{proposition}
 
     \begin{proof}
@@ -995,7 +986,7 @@ A* Search is a variant of UCS that uses $h(n)$ to rank the nodes on the \Frontie
     \end{proof}
 
     \begin{theorem}[Optimality of A* Search]\label{thm:optimality-of-astar}
-        A* with an admissible heuristic always finds an optimal cost solution if one exists, as long as 
+        A* with an admissible heuristic always finds an optimal cost solution if one exists, as long as
 
         \begin{listu}
             \item the branching factor is \itblue{finite}; and
@@ -1004,9 +995,9 @@ A* Search is a variant of UCS that uses $h(n)$ to rank the nodes on the \Frontie
     \end{theorem}
 
     \begin{proof}
-        Let $C^*$ be the cost of an optimal solution. 
+        Let $C^*$ be the cost of an optimal solution.
 
-        If a solution exists, then by completeness, A* will eventually expand some solution node $n$. 
+        If a solution exists, then by completeness, A* will eventually expand some solution node $n$.
 
         By the proposition, $f(n) \le C^*$. Since $n$ is a goal node, we have $h(n) = 0$. So $f(n) = g(n) = \textsc{Cost}(n)$. Thus, $\textsc{Cost}(n) \le C^*$.
 
@@ -1014,7 +1005,7 @@ A* Search is a variant of UCS that uses $h(n)$ to rank the nodes on the \Frontie
 
         Thus, $\textsc{Cost}(n) = C^*$, and $n$ is an optimal solution.
 
-        That is, A* returns a cost-optimal solution. 
+        That is, A* returns a cost-optimal solution.
     \end{proof}
 
     \begin{definition}[Monotonicity / Consistency]\index{Monotonicity}\index{Consistency}\label{def:monotonicity}
@@ -1031,7 +1022,7 @@ A* Search is a variant of UCS that uses $h(n)$ to rank the nodes on the \Frontie
         \]
     \end{theorem}
 
-    If a node $n_2$ is expanded after $n_1$ by $A*$ with a monotonic heuristic, then $f(n_1) \le f(n_2)$. With a monotonic heuristic, the first time A* expands a node $n$, $n$ must be a \itblue{minimum cost} solution to $n.state$. 
+    If a node $n_2$ is expanded after $n_1$ by $A*$ with a monotonic heuristic, then $f(n_1) \le f(n_2)$. With a monotonic heuristic, the first time A* expands a node $n$, $n$ must be a \itblue{minimum cost} solution to $n.state$.
 \end{listu}
 
 \subsubsection{Properties of A* Search}
@@ -1040,9 +1031,9 @@ A* Search is a variant of UCS that uses $h(n)$ to rank the nodes on the \Frontie
     \item \textbf{Completeness and Optimality}
 
     Yes, as shown in the previous theorems.
-    
+
     \item \textbf{Time Complexity and Space Complexity}
-    
+
     When $h(n) = 0$ for all nodes $n$, A* is equivalent to UCS.
 
     It can be shown that when $h(n) > 0$ (for some $n$) and an admissible heuristic is used, the number of nodes expanded can be no longer than UCS, hence the same bounds on time and space complexity apply. We still have an \bred{exponential} time and space complexity, unless we have a \itblue{good heuristic}. In real-world problems, we sometimes run out of time and memory before we find a solution.
@@ -1067,9 +1058,9 @@ The objective of \term{Iterative Deepening A*} (IDA*) is to \itblue{avoid} the \
 
     \begin{listo}
         \item allow a move from $A$ to $B$ if $A$ is adjacent to $B$ (ignore whether or not position is blank), which leads to the Manhattan distance heuristic
-        
+
         \item allow a move from $A$ to $B$ if $B$ is blank (ignore adjacency);
-        
+
         \item allow all moves from $A$ to $B$ (ignore both conditions), which leads to the misplaced tiles heuristic
     \end{listo}
 

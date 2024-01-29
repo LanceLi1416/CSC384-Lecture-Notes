@@ -9,7 +9,7 @@ In order to formalize a problem as a search problem, we need to define the follo
 \begin{enumerate}
     \item \term{State Space}: A state is a representation of a configuration of the problem domain. The state space is the set of all states included in our model of the problem.
     \item \term{Initial State}: The starting configuration.
-    \item \term{Goal State}: The configuration one wants to achieve. 
+    \item \term{Goal State}: The configuration one wants to achieve.
     \item \term{Actions} (or \term{State Space Transitions}): Allowed changes to move from one state to another.
 \end{enumerate}
 
@@ -35,10 +35,10 @@ Optionally, we may use the following:
 
 \begin{enumerate}
     \item Sudoku is a popular number puzzle that works as follows: we are given a $9 \times 9$ square grid; some squares have numbers, while some are blank. Our objective is to fill in the blanks with numbers from $1 - 9$ such that each row, column, and the highlighted $3 \times 3$ squares contain no duplicate entries (see Figure 1).
-    
+
     \begin{figure}[ht!]
         \centering
-        
+
         \begin{subfigure}[t]{0.45\linewidth}
             \centering
             \includegraphics[width=0.5\linewidth]{figures/tut1-fig1.png}
@@ -54,7 +54,7 @@ Optionally, we may use the following:
     Sudoku puzzles can be solved easily after being modelled as a CSP (which will be covered later in the course). We will consider the problem of generating Sudoku puzzles. In particular, consider the following procedure: start with a completely full number grid (see Figure 2), and iteratively make some squares blank. We continue blanking out squares as long as the resulting puzzle can be completed in at least one way.
 
     Complete the following:
-    
+
     \begin{listu}
         \item Give the representation of a state in this problem.
 
@@ -68,7 +68,7 @@ Optionally, we may use the following:
             \null
 
             \begin{listu}
-                \item The initial state is a completed filled out grid of numbers which is a valid. All rows, columns, and $3 \times 3$ squares should contain all numbers between $1, \dots, 9$. 
+                \item The initial state is a completed filled out grid of numbers which is a valid. All rows, columns, and $3 \times 3$ squares should contain all numbers between $1, \dots, 9$.
                 \item Any state in the problem will be a valid goal state.
             \end{listu}
         \end{solution}
@@ -80,7 +80,7 @@ Optionally, we may use the following:
         \end{solution}
 
         \item Using the state representation and actions defined above, specify the transition function $T$. (In other words, when each of the actions defined above is applied to a current state, what is the resulting state?)
-        
+
         \begin{solution}
             The transition model would be $T(M - E_{ij}(a)) = M - E_{ij}(a)$.
         \end{solution}
@@ -92,9 +92,7 @@ Optionally, we may use the following:
         \centering
 
         \tikzexternalenable
-        \begin{tikzpicture} [
-            every node/.style = {draw=black, circle},
-        ]
+        \begin{tikzpicture} [every node/.style = {draw=black, circle}]
 
             \node (S) at (0,  0) {$S$};
             \node (A) at (2,  2) {$A$};
@@ -116,7 +114,7 @@ Optionally, we may use the following:
             \draw[thick,-latex] (F) -- (G);
         \end{tikzpicture}
         \tikzexternaldisable
-        
+
         \caption*{Figure 3: Graph for question 2.}
     \end{figure}
 
@@ -142,14 +140,14 @@ Optionally, we may use the following:
 
     \item \begin{enumerate}
         \item The \textbf{Breadth-First Search} algorithm is complete if the state space has infinite depth but finite branching factor.
-        
+
         Determine if the statement above is True or False, and provide a rationale.
 
         \begin{solution}
-            This is \textbf{true}. 
-            
-            This follows immediately from the definitions of Breadth-First Search and completeness. (Recall that a search algorithm is complete if whenever there is a path from the initial state to the goal, the algorithm will find it.) 
-            
+            This is \textbf{true}.
+
+            This follows immediately from the definitions of Breadth-First Search and completeness. (Recall that a search algorithm is complete if whenever there is a path from the initial state to the goal, the algorithm will find it.)
+
             In particular, the existence of a path means that the goal exists in a finite depth, and therefore Breadth-First Search will eventually reach it, since having a finite branching factor implies that the algorithm would not get lost in infinite-breadth search at some level.
         \end{solution}
 
@@ -158,8 +156,8 @@ Optionally, we may use the following:
         Determine if the statement above is True or False, and provide a rationale
 
         \begin{solution}
-            This is \textbf{true}. 
-            
+            This is \textbf{true}.
+
             As highlighted in the previous question, Breadth-First Search is complete as long as the state space has a finite branching factor. Note that Breadth-First Search (as well as Depth-First Search) does not take into account edge weights.
         \end{solution}
 
@@ -168,8 +166,8 @@ Optionally, we may use the following:
         Determine if the statement above is True or False, and provide a rationale
 
         \begin{solution}
-            This is \textbf{false}. 
-            
+            This is \textbf{false}.
+
             We could have two goal nodes in the same level with different costs but with the same depth. For example, arbitrary tie-breaking (or breaking ties by alphabetical ordering) of the Breadth-First Search algorithm may result in $A$ reached before $B$.
 
             \begin{figure}[ht!]
@@ -195,14 +193,14 @@ Optionally, we may use the following:
 
     \begin{solution}
         \begin{proof}
-            WTS UCS is optimal as long as each step cost exceeds positive value $\epsilon$. 
+            WTS UCS is optimal as long as each step cost exceeds positive value $\epsilon$.
 
             Given that each step cost exceeds some small positive constant $\epsilon$, completeness may be assumed. Consequently:
 
             \begin{listu}
                 \item Whenever UCS expands a node $n$, the optimal path to that node has been found. If this was not the case, there would have to be another frontier node $n'$ on the optimal path from the start node to $n$. By definition, $n'$ would have a lower value of $g$ than $n$, and thus would have been selected first.
 
-                \item If step costs are non-negative, paths never get shorter as nodes are added. 
+                \item If step costs are non-negative, paths never get shorter as nodes are added.
             \end{listu}
 
             The above two points imply that UCS expands nodes in the order of their optimal path cost.
@@ -244,7 +242,7 @@ Consider the search problem of Figure 1. Execute UCS (without cycle-checking) st
     \caption*{Figure 1: A search problem.}
 \end{figure}
 
-\begin{solution} \begin{table}[ht!] \color{primary} 
+\begin{solution} \begin{table}[ht!] \color{primary}
     \centering
     \renewcommand{\arraystretch}{1.15}
 
@@ -266,32 +264,32 @@ Consider the search problem of Figure 1. Execute UCS (without cycle-checking) st
 \subsection*{A* \& Heuristics}
 
 A tracing example of executing A* (without cycle-checking) on the problem of figure 2
-    
+
 \begin{figure}[ht!]
     \centering
 
     \tikzexternalenable
-        \begin{tikzpicture}
-            \node[draw,circle] (A) at (0,   0) {$A$};
-            \node[draw,circle] (B) at (0,  -2) {$B$};
-            \node[draw,circle] (C) at (3,  -1) {$C$};
-            \node[draw,circle] (D) at (3,  -3) {$D$};
-        
-            \draw[thick,-latex] (A)      -- (B)            node[midway,        left] {$4$};
-            \draw[thick,-latex] (A)      -- (C)            node[midway, above      ] {$1$};
-            \draw[thick,-latex] (B.east) -- (C.south west) node[midway, below      ] {$2$};
-            \draw[thick,-latex] (C.west) -- (B.north east) node[midway, above      ] {$2$};
-            \draw[thick,-latex] (B)      -- (D)            node[midway, below      ] {$6$};
-            \draw[thick,-latex] (C)      -- (D)            node[midway,       right] {$9$};
-        
-            \node (hA) at (5,  0)   {$h(A) = 8$};
-            \node (hB) at (5, -0.5) {$h(B) = 3$};
-            \node (hC) at (5, -1)   {$h(C) = 7$};
-            \node (hD) at (5, -1.5) {$h(D) = 0$};
-        
-            \node (start) at (5, -2.5) {START = $A$};
-            \node (goal)  at (5, -3)   {GOAL = $D$};
-        \end{tikzpicture}
+    \begin{tikzpicture}
+        \node[draw,circle] (A) at (0,   0) {$A$};
+        \node[draw,circle] (B) at (0,  -2) {$B$};
+        \node[draw,circle] (C) at (3,  -1) {$C$};
+        \node[draw,circle] (D) at (3,  -3) {$D$};
+
+        \draw[thick,-latex] (A)      -- (B)            node[midway,        left] {$4$};
+        \draw[thick,-latex] (A)      -- (C)            node[midway, above      ] {$1$};
+        \draw[thick,-latex] (B.east) -- (C.south west) node[midway, below      ] {$2$};
+        \draw[thick,-latex] (C.west) -- (B.north east) node[midway, above      ] {$2$};
+        \draw[thick,-latex] (B)      -- (D)            node[midway, below      ] {$6$};
+        \draw[thick,-latex] (C)      -- (D)            node[midway,       right] {$9$};
+
+        \node (hA) at (5,  0)   {$h(A) = 8$};
+        \node (hB) at (5, -0.5) {$h(B) = 3$};
+        \node (hC) at (5, -1)   {$h(C) = 7$};
+        \node (hD) at (5, -1.5) {$h(D) = 0$};
+
+        \node (start) at (5, -2.5) {START = $A$};
+        \node (goal)  at (5, -3)   {GOAL = $D$};
+    \end{tikzpicture}
     \tikzexternaldisable
 
     \caption*{Figure 2: Another search problem.}
@@ -348,7 +346,7 @@ Each cost is depicted as the cost to get that node plus the heuristic cost at th
 
     \begin{table}[ht!]
         \centering
-    
+
         \begin{tabular}{||c|c|c|c|c|c|c||}
             \hline
                   & S & A & B & G & Admissible            & Consistent            \\ \hline \hline
@@ -373,7 +371,7 @@ Each cost is depicted as the cost to get that node plus the heuristic cost at th
             % \end{tikzpicture} \end{center}
             % TODO: Add solution
         \end{solution}
-        
+
         \item Provide a counter-example to show that Greedy Best-First Search (with or without cycle-checking) is not optimal.
 
         % TODO: Add solution
