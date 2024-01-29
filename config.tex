@@ -12,6 +12,7 @@
 \usepackage{algorithmicx}
 \usepackage{algpseudocode}
 \usepackage{amsfonts,amsmath,amsthm,amssymb}
+\usepackage{array}
 \usepackage{booktabs}
 \usepackage{float}
 \usepackage{graphicx}
@@ -51,6 +52,8 @@
     \let\@ifnextchar\new@ifnextchar
     \array{#1}}
 \makeatother
+
+\newcolumntype{Y}{>{\centering\arraybackslash}X}
 
 % ------------------
 % Colors
