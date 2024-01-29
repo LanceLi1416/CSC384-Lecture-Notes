@@ -878,3 +878,221 @@ A* Search is a variant of UCS that uses $h(n)$ to rank the nodes on the \Frontie
 \begin{definition}[A* Search]\index{A* Search}\label{def:astar}
     \term{A* Search} is a search strategy that expands the node with the lowest evaluation cost \[ f(n) = g(n) + h(n). \]
 \end{definition}
+
+\begin{example}
+    Consider a tracing example of Romania Travel problem. The heuristic function $h(n)$ is defined to be the Euclidean distance between the current city and Bucharest.
+
+    \begin{minipage}[t]{0.45\linewidth} \begin{center} \includegraphics[width=\linewidth]{figures/a-star-search/1.png} Arad \end{center} \end{minipage}
+    \hfill%
+    \begin{minipage}[t]{0.45\linewidth} \begin{center} \includegraphics[width=\linewidth]{figures/a-star-search/2.png} Sibiu \end{center} \end{minipage}
+
+    {~~~}
+
+    {~~~}
+
+    \begin{minipage}[t]{0.45\linewidth} \begin{center} \includegraphics[width=\linewidth]{figures/a-star-search/3.png} Rimriau Vâlcea \end{center} \end{minipage}
+    \hfill%
+    \begin{minipage}[t]{0.45\linewidth} \begin{center} \includegraphics[width=\linewidth]{figures/a-star-search/4.png} Făgăraș \end{center} \end{minipage}
+
+    {~~~}
+
+    {~~~}
+
+    \begin{minipage}[t]{0.45\linewidth} \begin{center} \includegraphics[width=\linewidth]{figures/a-star-search/5.png} Pitești \end{center} \end{minipage}
+    \hfill%
+    \begin{minipage}[t]{0.45\linewidth} \begin{center} \includegraphics[width=\linewidth]{figures/a-star-search/6.png} Bucharest \end{center} \end{minipage}
+\end{example}
+
+\begin{remark}[No Solution Case]
+    A*, as well as all of the uninformed search algorithms, have the same behaviour when there is \bred{no solution}:
+
+    \begin{listu}
+        \item If there are an \itblue{infinite} number of different \itblue{states} reachable from the initial state, then these algorithms \bred{never terminate}.
+        \item If there are a \itblue{finite} number of different reachable states (and nodes) and we do either \itblue{path checking} or \itblue{cycle checking}, they will eventually terminate and correctly declare that there is no solution (assuming costs are always $\ge \epsilon > 0$).
+    \end{listu}
+\end{remark}
+
+\begin{listu}
+    \item \textbf{Completeness}
+    
+    \begin{theorem}[Completeness of A* Search]\label{thm:completeness-of-astar}
+        A* will always find a solution if one exists as long as 
+
+        \begin{listu}
+            \item the branching factor is \itblue{finite};
+            \item every action has a \itblue{finite cost} greater than $\epsilon > 0$; and 
+            \item $h(n)$ is \itblue{finite} for every node $n$ that can be extended to \bred{reach a goal node}. 
+        \end{listu}
+    \end{theorem}
+
+    \begin{proof}
+        If a solution $n$ exists, then at all times either 
+        \begin{listu}
+            \item $n$ has been expanded by A*, or 
+            \item an ancestor of $n$ is on the \Frontier.
+        \end{listu}
+
+        Suppose the latter holds, and let the ancestor on the \Frontier~ be $n_i$. 
+
+        Then, $n_i$ must have a finite $f$-value. 
+
+        As A* continues to run, the $f$-value of the nodes on the \Frontier~eventually \bred{increase}. So, eventually, either A* terminates because it found a solution, or $n_i$ becomes the node \bred{on the \Frontier~with the lowest $f$-value}.
+
+        If $n_i$ is expanded, then either $n_i - n$ and A* returns $n$ as a solution, or $n_i$ is replaced by its successors, one of which $n_{i+1}$ is a \itblue{closer ancestor} of $n$.
+
+        Applying the same argument to $n_{i+1}$, we see that if A* continues to run without finding a solution, it will \bred{eventually expand every ancestor of $n$}, including $n$ itself. 
+
+        Therefore, A* will eventually return a solution if one exists.
+    \end{proof}
+
+    \item \textbf{Optimality}
+    
+    \begin{definition}[Asmissibility]\index{Asmissibility}\label{def:asmissibility}
+        Let $h^*(n)$ be the cost of an optimal path from $n$ to a goal node ($\infty$ if there is no path). An \term{admissible} heuristic is a heuristic that satisfies the following condition for all nodes $n$ in the search space: \[
+            h(n) \le h^*(n)
+        \]
+    \end{definition}
+
+    In other words, an admissible heuristic is a heuristic that \bred{never overestimates} the cost of reaching a goal node from $n$.
+
+    To achieve optimality, we must pou come conditions on $h(n)$ and the search space.
+    \begin{listu}
+        \item Each action in the search space must have a \itblue{cost $\ge \epsilon > 0$}.
+        \item $h$ must be \itblue{admissible}.
+    \end{listu}
+
+    This way, the search will not miss any promising paths. If it really is cheap to get to a goal via $n$ (i.e., both $g(n)$ and $h^*(n)$ are low), then $f(n)$ is also low, and eventually $n$ will be expanded. 
+
+    \begin{example}
+        Consider when there are two goal nodes, $g_1$ and $g_2$, with $\textsc{Cost}(g_1) < \textsc{Cost}(g_2)$. Let $n$ be a node on the path to $g_1$. 
+
+        Then, by having an admissible heuristic, we will always expand $n$ before expanding any node on the path to $g_2$ (even if $g_2$ itself is on the \Frontier).
+    \end{example}
+
+    \begin{proposition}\label{prop:optimal-cost}
+        A* with an admissible heuristic never expands a node with $f$-value greater than the cost of an optimal solution. 
+    \end{proposition}
+
+    \begin{proof}
+        Let $C^*$ be the cost of an optimal solution.
+
+        Let $p: \langle s_0, s_1, \cdots, s_k \rangle$ be an optimal solution path. Then, $\textsc{cost}(p) = \textsc{cost}( \langle s_0, s_1, \dots, s_k \rangle) = C^*$.
+
+        It can be shown bt induction for each node in the search space that is reachable from the initial node, at every iteration an ancestor of the node is on the \Frontier.
+
+        Let $n$ be a node reachable from the initial state and $n_0, n_1, \dots, n_i, \dots, n$ be ancestors of $n$. SO at least one of $n_0, n_1, \dots, n_i, \dots, n$ is \bred{always} on the \Frontier.
+
+        We show that with an admissible heuristic, for every ancestor $n_i$ of $n$ on the \Frontier, $f(n_i) \le C^*$
+
+        \begin{align*}
+            C^8 & = \textsc{Cost} \left( \langle s_0, s_1, \dots, s_k \rangle \right)                                                                             \\
+                & = \textsc{Cost} \left( \langle s_0, s_1, \dots, s_i \rangle \right) + \textsc{Cost} \left( \langle s_{i+1}, s_{i+2}, \dots, s_k \rangle \right) \\
+                & = g(n_i) + h^*(n_1)                                                                                                                             \\
+                & \ge  g(n_i) + h(n_i) = f(n_i)
+        \end{align*}
+
+        We know that A* always expands a node on teh \Frontier~ that has \itblue{lowest $f$-value}. So every node A* expands has $f$-value $\le f(n_i) \le C^*$.
+    \end{proof}
+
+    \begin{theorem}[Optimality of A* Search]\label{thm:optimality-of-astar}
+        A* with an admissible heuristic always finds an optimal cost solution if one exists, as long as 
+
+        \begin{listu}
+            \item the branching factor is \itblue{finite}; and
+            \item every action has a \itblue{finite cost} greater than $\epsilon > 0$
+        \end{listu}
+    \end{theorem}
+
+    \begin{proof}
+        Let $C^*$ be the cost of an optimal solution. 
+
+        If a solution exists, then by completeness, A* will eventually expand some solution node $n$. 
+
+        By the proposition, $f(n) \le C^*$. Since $n$ is a goal node, we have $h(n) = 0$. So $f(n) = g(n) = \textsc{Cost}(n)$. Thus, $\textsc{Cost}(n) \le C^*$.
+
+        We also have that $C^* \le \textsc{Cost}(n) = f(n)$ since no solution can have lower cost than the optimal solution.
+
+        Thus, $\textsc{Cost}(n) = C^*$, and $n$ is an optimal solution.
+
+        That is, A* returns a cost-optimal solution. 
+    \end{proof}
+
+    \begin{definition}[Monotonicity / Consistency]\index{Monotonicity}\index{Consistency}\label{def:monotonicity}
+        A \term{monotone} (or \term{consistent}) heuristic $h$ is a heuristic that satisfies the triangle inequality: for all nodes $n_1, n_2$ and all actions $a$ we have that \[
+            h(n_1) \le C(n_1, a, n_2) + h(n_2)
+        \] where $C(n_1, a, n_2)$ is the cost of getting from the state $n_1$ to the state $n_2$ by applying action $a$.
+    \end{definition}
+
+    In other words, a monotone heuristic will not suddenly decrement the estimated cost by taking a single action. A consistent heuristic will not be misleading, thus improves the efficiency of A*.
+
+    \begin{theorem}
+        Monotonicity implies admissibility. That is, \[
+            (\forall n_1, n_2 a) h(n_1) \le C(n_1, a, n_2) + h(n_2) \implies (\forall n) h(n) \le h^*(n)
+        \]
+    \end{theorem}
+
+    If a node $n_2$ is expanded after $n_1$ by $A*$ with a monotonic heuristic, then $f(n_1) \le f(n_2)$. With a monotonic heuristic, the first time A* expands a node $n$, $n$ must be a \itblue{minimum cost} solution to $n.state$. 
+\end{listu}
+
+\subsubsection{Properties of A* Search}
+
+\begin{listu}
+    \item \textbf{Completeness and Optimality}
+
+    Yes, as shown in the previous theorems.
+    
+    \item \textbf{Time Complexity and Space Complexity}
+    
+    When $h(n) = 0$ for all nodes $n$, A* is equivalent to UCS.
+
+    It can be shown that when $h(n) > 0$ (for some $n$) and an admissible heuristic is used, the number of nodes expanded can be no longer than UCS, hence the same bounds on time and space complexity apply. We still have an \bred{exponential} time and space complexity, unless we have a \itblue{good heuristic}. In real-world problems, we sometimes run out of time and memory before we find a solution.
+\end{listu}
+
+\subsection{Iterative Deepening A* (IDA*)}
+
+The objective of \term{Iterative Deepening A*} (IDA*) is to \itblue{avoid} the \itblue{exponential} space complexity of A* by using \itblue{iterative deepening}. Similar to iterative deepening search, IDA* repeatedly applies A* with increasing $f$-value limits until a solution is found. At each iteration, the cutoff value is the \itblue{smallest $f$-value} of any node that exceeded the cutoff in the \itblue{previous iteration}. This will avoid overhead associated with keeping a sorted queue of nodes, and the \Frontier~will occupy only \bred{linear space}.
+
+\begin{definition}[Iterative Deepening A*]\index{Iterative Deepening A*}\label{def:ida-star}
+    \term{Iterative Deepening A*} (IDA*) is a search strategy that repeatedly applies A* with increasing $f$-value limits until a solution is found.
+\end{definition}
+
+\subsection{Building Heuristic Functions}
+
+\begin{remark}[How to Build A Heuristic]
+    \bred{Simplify} a problem when building heuristics and let $h(n)$ be the cost of reaching the goal in the easier problem.
+\end{remark}
+
+\begin{example}
+    In the 8-Puzzle we can only move a tile from square $A$ to $B$ if $A$ is adjacent (left, right, above, below) to $B$ and $B$ is blank. We can relax some of these conditions and:
+
+    \begin{listo}
+        \item allow a move from $A$ to $B$ if $A$ is adjacent to $B$ (ignore whether or not position is blank), which leads to the Manhattan distance heuristic
+        
+        \item allow a move from $A$ to $B$ if $B$ is blank (ignore adjacency);
+        
+        \item allow all moves from $A$ to $B$ (ignore both conditions), which leads to the misplaced tiles heuristic
+    \end{listo}
+
+    \begin{figure}[ht!]
+        \centering
+
+        \begin{subfigure}[t]{0.45\linewidth}
+            \centering
+            \includegraphics*[width=0.45\linewidth]{figures/8-puzzle-start.png}
+            \caption*{Start State}
+        \end{subfigure}
+        \hfil%
+        \begin{subfigure}[t]{0.45\linewidth}
+            \centering
+            \includegraphics*[width=0.45\linewidth]{figures/8-puzzle-goal.png}
+            \caption*{Goal State}
+        \end{subfigure}
+    \end{figure}
+
+    Admissible Heuristics for the 8-puzzle Problem include:
+
+    \begin{listu}
+        \item $h(n)$: number of misplaced tiles in $n.state$ (misplaced tiles)
+        \item $h(n)$: total Manhattan distance of all tiles from their goal positions in $n.state$ (Manhattan distance)
+    \end{listu}
+\end{example}
