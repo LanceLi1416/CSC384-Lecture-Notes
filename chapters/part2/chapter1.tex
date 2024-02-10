@@ -220,22 +220,22 @@ Consider the search problem of Figure 1. Execute UCS (without cycle-checking) st
 
     \tikzexternalenable
     \begin{tikzpicture}
-        \node[draw,circle] (S) at (0,  0) {$S$};
-        \node[draw,circle] (P) at (1, -1) {$P$};
-        \node[draw,circle] (D) at (2,  2) {$D$};
-        \node[draw,circle] (E) at (4,  2) {$E$};
-        \node[draw,circle] (H) at (4,  0) {$H$};
-        \node[draw,circle] (Q) at (3, -1) {$Q$};
-        \node[draw,circle] (G) at (6,  0) {$G$};
+        \node[draw,circle] (S) at (0,  0)   {$S$};
+        \node[draw,circle] (P) at (1, -1)   {$P$};
+        \node[draw,circle] (D) at (2,  2)   {$D$};
+        \node[draw,circle] (E) at (4,  2)   {$E$};
+        \node[draw,circle] (H) at (3,  0.5) {$H$};
+        \node[draw,circle] (Q) at (3, -1)   {$Q$};
+        \node[draw,circle] (G) at (6,  0)   {$G$};
 
-        \draw[thick,-latex] (S) -- (D) node[midway, above left] {$3$};
-        \draw[thick,-latex] (S) -- (P) node[midway, below left] {$1$};
-        \draw[thick,-latex] (S) -- (E) node[midway, below     ] {$9$};
-        \draw[thick,-latex] (P) -- (Q) node[midway, below     ] {$15$};
-        \draw[thick,-latex] (D) -- (E) node[midway, above     ] {$2$};
-        \draw[thick,-latex] (E) -- (H) node[midway,       left] {$1$};
-        \draw[thick,-latex] (H) -- (Q) node[midway, above left] {$4$};
-        \draw[thick,-latex] (Q) -- (G) node[midway, below     ] {$1$};
+        \draw[thick,-latex] (S) -- (D) node[midway, above  left] {$3$};
+        \draw[thick,-latex] (S) -- (P) node[midway, below  left] {$1$};
+        \draw[thick,-latex] (S) -- (E) node[midway, below      ] {$9$};
+        \draw[thick,-latex] (P) -- (Q) node[midway, below      ] {$15$};
+        \draw[thick,-latex] (D) -- (E) node[midway, above      ] {$2$};
+        \draw[thick,-latex] (E) -- (H) node[midway,       right] {$1$};
+        \draw[thick,-latex] (H) -- (Q) node[midway,       right] {$4$};
+        \draw[thick,-latex] (Q) -- (G) node[midway, below      ] {$1$};
     \end{tikzpicture}
     \tikzexternaldisable
 
@@ -246,7 +246,7 @@ Consider the search problem of Figure 1. Execute UCS (without cycle-checking) st
     \centering
     \renewcommand{\arraystretch}{1.15}
 
-    \begin{tabular}{r | l}
+    \begin{tabular}{c | c}
         (Node, Path)  & Frontier                                   \\ \hline
                       & $\{ (S, 0) \}$                             \\
         $(S, S)$      & $\{ (SP, 1), (SD, 3), (SE, 9) \}$          \\
@@ -277,8 +277,8 @@ A tracing example of executing A* (without cycle-checking) on the problem of fig
 
         \draw[thick,-latex] (A)      -- (B)            node[midway,        left] {$4$};
         \draw[thick,-latex] (A)      -- (C)            node[midway, above      ] {$1$};
-        \draw[thick,-latex] (B.east) -- (C.south west) node[midway, below      ] {$2$};
-        \draw[thick,-latex] (C.west) -- (B.north east) node[midway, above      ] {$2$};
+        \draw[thick,-latex] (B.east) -- (C.south west) node[midway, below right] {$2$};
+        \draw[thick,-latex] (C.west) -- (B.north east) node[midway, above  left] {$2$};
         \draw[thick,-latex] (B)      -- (D)            node[midway, below      ] {$6$};
         \draw[thick,-latex] (C)      -- (D)            node[midway,       right] {$9$};
 
@@ -326,54 +326,197 @@ Each cost is depicted as the cost to get that node plus the heuristic cost at th
             $A$         & $\{ (C,AC, 1+7=8), {\color{blue}(B,AB, 4+3=7)} \}$      \\ \hline
             $B$         & $\{ {\color{blue}(C,AC, 1+7=8)}, (D,ABD, 10+0=10) \}$   \\ \hline
             $C$         & $\{ {\color{blue}(B,ACB, 3+3=6)}, (D,ABD, 10+0=10) \}$  \\ \hline
-            $B$         & $\{ (C,ACBC, 5+7=12), {\color{blue}(D,ACBD, 9+0=9)} \}$ \\ \hline
+            $B$         & $\{ {\color{blue}(D,ACBD, 9+0=9)}, (D,ABD, 10+0=10) \}$ \\ \hline
         \end{tabular}
     \end{table} \end{solution}
 
     \item Prove that the A* Search algorithm with cycle-checking is optimal when a consistent heuristic is utilized.
 
-    % TODO: Add solution
+    \begin{solution}
+        The proof uses the following notation:
+        \begin{listu}
+            \item The function $\hat{g}(n)$ denotes the current best known path cost from the initial state to node $n$. Note that the value of $\hat{g}(n)$ is updated during the execution of the algorithm. 
+            \item The function $g^(n)$ denotes the minimum path cost from an initial state to state $n$.
+            \item The function $h(n)$, known as a heuristic, denotes the approximated path cost from state $n$ to the (nearest) goal state.
+            \item The functions $f(n)$ and $\hat{f}(n)$ are evaluation functions that are adopted by the informed search algorithm in question. For example, in the case of the greedy best-first search algorithm, $f(n) = \hat{f}(n) = h(n)$; in the case of the A* search algorithm, $f(n) = g(n) + h(n)$ and $\hat{f}(n) = \hat{g}(n) + h(n)$. $\hat{f}_{\mathrm{pop}}(n)$ denotes the value of $\hat{f}(n)$ when it is popped from the frontier.
+        \end{listu}
+
+        % \begin{proof}
+        \textit{Proof.}
+            Mathematically, we would want to prove that $\hat{f}_{\mathrm{pop}}(n) = f(s_g)$, i.e., when the goal node $s_f$ is popped from the frontier, we would have found the optimal path to it. Let \[ s_0, s_1, \dots, s_{g-1}, s_g \] be the path from the start node $s_0$ leading to the goal node $s_g$.
+
+            \begin{listu}
+                \item \textbf{Base case:} $\hat{f}_{\mathrm{pop}}(s_0) = f(s_0) = h(s_0)$. 
+                \item \textbf{Inductive step:} Assume that for all $s_0, s_1, \dots, s_k$, $\hat{f}_{\mathrm{pop}}(s_i) = f(s_i)$. We know that 
+                \begin{align*}
+                    \hat{f}_{\mathrm{pop}}(s_{k+1}) & = \hat{g}(s_{k+1}) + h(s_{k+1})         \\
+                                                    & \ge g(s_{k+1}) + h(s_{k+1})             \\
+                                                    & = f(s_{k+1}) \tag{1}\label{eq:tut2-2-1}
+                \end{align*}
+
+                In order to make sure that each $s_{k+1}$ is only explored after when we pop $s_k$, the condition of $f(s_i) \le f(s_{i+1})$ is required, leading to the need for the consistency of $h$. By popping $s_k$, we have 
+                \begin{align*}
+                    \hat{f}_{\mathrm{pop}}(s_{k+1})
+                     & = \min \left\{ \hat{f}(s_{k+1}), \hat{g}_{\mathrm{pop}}(s_k) + c(s_k, s_{k+1}) + h(s_{k+1}) \right\} \\
+                     & \le \hat{g}_{\mathrm{pop}}(s_k) + c(s_k, s_{k+1}) + h(s_{k+1})                                       \\
+                     & = g(s_k) + c(s_k, s_{k+1}) + h(s_{k+1})
+                     & \text{from our IH}                                                                                   \\
+                     & = g(s_{k+1}) + h(s_{k+1})                                                                            \\
+                     & = f(s_{k+1}) \tag{2}\label{eq:tut2-2-2}
+                \end{align*}
+
+                From equations \eqref{eq:tut2-2-1} and \eqref{eq:tut2-2-2}, we obtain $\hat{f}_{\mathrm{pop}}(s_{k+1}) = f(s_{k+1})$. Hence, by induction, whenever we pop a node from the frontier, the optimal path to the node would have been found. \qed
+            \end{listu}
+        % \end{proof}
+    \end{solution}
 
     \item In the search problem below, we have listed 5 heuristics. Indicate whether each heuristic is admissible and/or consistent in the table below.
 
-    \begin{remark}
-        \begin{listu}
-            \item Consistent: $h(v_i) \le h(v_j) + c(v_i, v_j)$
-
-            \item Admissible: $h(v) \le c^*(v)$
-        \end{listu}
-    \end{remark}
-
-    \begin{table}[ht!]
+    \begin{figure}[ht!]
         \centering
 
-        \begin{tabular}{||c|c|c|c|c|c|c||}
-            \hline
-                  & S & A & B & G & Admissible            & Consistent            \\ \hline \hline
-            $h_1$ & 0 & 0 & 0 & 0 & \color{primary} True  & \color{primary} True  \\ \hline
-            $h_2$ & 8 & 1 & 1 & 0 & \color{primary} True  & \color{primary} False \\ \hline
-            $h_3$ & 9 & 3 & 2 & 0 & \color{primary} True  & \color{primary} False \\ \hline
-            $h_4$ & 6 & 3 & 1 & 0 & \color{primary} True  & \color{primary} True  \\ \hline
-            $h_5$ & 8 & 4 & 2 & 0 & \color{primary} False & \color{primary} False \\ \hline
-        \end{tabular}
-    \end{table}
+        \tikzexternalenable
+        \begin{tikzpicture}
+            \node[draw,circle] (S) at (0, 0) {$S$};
+            \node[draw,circle] (A) at (2, 2) {$A$};
+            \node[draw,circle] (B) at (2, 0) {$B$};
+            \node[draw,circle] (G) at (4, 0) {$G$};
+
+            \draw[thick,-latex] (S) -- (A) node[midway, above] {$6$};
+            \draw[thick,-latex] (A) -- (B) node[midway,  left] {$1$};
+            \draw[thick,-latex] (A) -- (G) node[midway, above] {$4$};
+            \draw[thick,-latex] (B) -- (G) node[midway, below] {$2$};
+        \end{tikzpicture}
+        \tikzexternaldisable
+        
+        \caption*{Figure 3: Graphy for question 3.}
+    \end{figure}
+
+    \begin{solution}
+        \begin{remark} \color{primary}
+            \begin{listu}
+                \item Consistent: $h(v_i) \le h(v_j) + c(v_i, v_j)$
+
+                \item Admissible: $h(v) \le c^*(v)$
+            \end{listu}
+        \end{remark}
+
+        \begin{table}[ht!]
+            \centering
+
+            \begin{tabular}{||c|c|c|c|c|c|c||}
+                \hline
+                      & S & A & B & G & Admissible            & Consistent            \\ \hline \hline
+                $h_1$ & 0 & 0 & 0 & 0 & \color{primary} True  & \color{primary} True  \\ \hline
+                $h_2$ & 8 & 1 & 1 & 0 & \color{primary} True  & \color{primary} False \\ \hline
+                $h_3$ & 9 & 3 & 2 & 0 & \color{primary} True  & \color{primary} False \\ \hline
+                $h_4$ & 6 & 3 & 1 & 0 & \color{primary} True  & \color{primary} True  \\ \hline
+                $h_5$ & 8 & 4 & 2 & 0 & \color{primary} False & \color{primary} False \\ \hline
+            \end{tabular}
+        \end{table}
+    \end{solution}
 
     \item Given that a heuristic $h$ is such that $h(s_g) = 0$ where $s_g$ is any goal state, prove that if $h$ is consistent, then it must be admissible
 
-    % TODO: Add solution
+    \begin{solution}
+        \textit{Proof.} The proof can be done by induction on $k(s_i)$, which denotes the number of actions required to reach the goal from a node si to the goal node $s_g$.
 
-    \item \begin{enumerate}[label=\alph*)]
+        \begin{listu}
+            \item \textbf{Base case:} $k = 1$, i.e. the node $s_i$ is one step away from $s_g$
+            
+            Since the heuristic function $h$ is consistent, \[
+                h(s_i) \le c(s_i, s_g) + h(s_g)
+            \]
+
+            Since $h(s_g) = 0$, we have \[
+                h(s_i) \le c(s_i, s_g) = h^*(s_i)
+            \]
+
+            Therefore, $h$ is admissible.
+
+            \item \textbf{Inductive step:} 
+            
+            \begin{center}
+                \tikzexternalenable
+                \begin{tikzpicture}
+                    \node[draw,circle,minimum size=1cm] (si1) at (0,   0)   {$s_{i+1}$};
+                    \node[draw,circle,minimum size=1cm] (si)  at (1.5, 1.5) {$s_i$};
+                    \node[draw,circle,minimum size=1cm] (sg)  at (3,   0)   {$s_g$};
+
+                    \draw[thick,-latex] (si)  -- (si1);
+                    \draw[thick,-latex] (si)  --  (sg);
+                    \draw[thick,-latex] (si1) --  (sg);
+                \end{tikzpicture}
+                \tikzexternaldisable
+            \end{center}
+
+            Suppose that our assumption holds for every node that is $k-1$ actions away from $s_g$, and let us observe a node $s_i $that is $k$ actions away from $s_g$; that is, the optimal path from $s_i$ to $s_g$ has $k > 1$ steps. We can write the optimal path from $s_i$ to $s_g$ as \[
+                s_i \to s_{i+1} \to \cdots \to s_{g-1} \to s_g
+            \]
+
+            Since $h$ is consistent, we have \[
+                h(s_i) \le c(s_i, s_{i+1}) + h(s_{i+1})
+            \]
+
+            Now, note that since $s_{i+1}$ is on a least-cost path from $s_i$ to $s_g$, we must have that the path $s_{i+1} \to s_{i+2} \to \cdots \to s_{g-1} \to s_g$ is a least-cost path from $s_{i+1}$ to $s_g$ as well. By our induction hypothesis, we have \[
+                h(s_{i+1}) \le h^*(s_{i+1})
+            \]
+
+            Combining the two inequalities, we have \[
+                h(s_i) \le c(s_i, s_{i+1}) + h^*(s_{i+1})
+            \]
+
+            Note that $h^*(s_{i+1})$ is the cost of the optimal path from $s_{i+1}$ to $s_g$; by our previous observation (that $s_{i+1} \to s_{i+2} \to \cdots \to s_{g-1} \to s_g$ is a least-cost path from $s_{i+1}$ to $s_g$), we have that the cost of the optimal path from $s_i$ to $s_g$, i.e. $h^*(s_i)$, equals $c(s_i, s_{i+1}) + h^*(s_i)$, which concludes the proof. \qed
+        \end{listu}
+    \end{solution}
+
+    \item \begin{enumerate}
         \item Provide a counter-example to show that the \textbf{Greedy Best-First Search} algorithm without cycle-checking is incomplete.
 
         \begin{solution}
-            % \begin{center} \begin{tikzpicture}
-            %     \node[draw,circle] (S0) at (0, 0) {$S_0$};
-            % \end{tikzpicture} \end{center}
-            % TODO: Add solution
+            Consider the following search space, where 
+
+            \begin{minipage}[t]{0.45\linewidth} \begin{listu}
+                \item $h(s_0) = 3$
+                \item $h(s_1) = 4$
+                \item $h(s_2) = 5$
+                \item $h(s_g) = 0$
+            \end{listu} \end{minipage}
+            \begin{minipage}[t]{0.45\linewidth} \begin{center} \begin{tikzpicture}[baseline=(current bounding box.north)]
+                \node[draw,circle] (s0) at (0,   0)   {$S_0$};
+                \node[draw,circle] (s1) at (1.5, 1.5) {$S_1$};
+                \node[draw,circle] (s2) at (1.5, 0)   {$S_2$};
+                \node[draw,circle] (sg) at (3,   0)   {$S_g$};
+
+                \draw[thick] (s0) -- (s1);
+                \draw[thick] (s1) -- (s2);
+                \draw[thick] (s2) -- (sg);
+            \end{tikzpicture} \end{center} \end{minipage}
         \end{solution}
 
         \item Provide a counter-example to show that Greedy Best-First Search (with or without cycle-checking) is not optimal.
 
-        % TODO: Add solution
+        \begin{solution}
+            Consider the following search space, where 
+
+            \begin{minipage}[t]{0.45\linewidth} \begin{listu}
+                \item $h(s_0) = 9$
+                \item $h(s_1) = 1$
+                \item $h(s_g) = 0$
+                \item $h(s_g') = 0$
+            \end{listu} \end{minipage}
+            \begin{minipage}[t]{0.45\linewidth} \begin{center} \begin{tikzpicture}[baseline=(current bounding box.north)]
+                \node[draw,circle] (sp) at (0,   0)   {$S_g'$};
+                \node[draw,circle] (s0) at (1.5, 1.5) {$S_0$};
+                \node[draw,circle] (s1) at (1.5, 0)   {$S_1$};
+                \node[draw,circle] (sg) at (3,   0)   {$S_g$};
+
+                \draw[thick,-latex] (sp) -- (s0) node[midway,  left] {$10$};
+                \draw[thick,-latex] (s0) -- (s1) node[midway, right] {$8$};
+                \draw[thick,-latex] (s1) -- (sg) node[midway, below] {$1$};
+            \end{tikzpicture} \end{center} \end{minipage}
+
+            With either variant of the greedy best-first search algorithm, when $s_0$ is explored, $s_g'$ would be added to the front of the frontier and then explored next, resulting in the algorithm returning the non-optimal $s_0 \to s_g'$ path.
+        \end{solution}
     \end{enumerate}
 \end{enumerate}
